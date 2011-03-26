@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+        <script src="../libraries/RGraph.common.core.js" ></script>
+        <script src="../libraries/RGraph.common.context.js" ></script>
+        <script src="../libraries/RGraph.common.annotate.js" ></script>
+        <script src="../libraries/RGraph.common.tooltips.js" ></script>
+        <script src="../libraries/RGraph.common.zoom.js" ></script>
+        <script src="../libraries/RGraph.common.resizing.js" ></script>
+        <script src="../libraries/RGraph.line.js" ></script>
+
+        <script>
+            window.onload = function ()
+            {
+                var data = [10,4,17,50,25,19,20,25,30,29,30,29];
+            
+                var line = new RGraph.Line("myLine", data);
+                line.Set('chart.background.barcolor1', 'rgba(255,255,255,1)');
+                line.Set('chart.background.barcolor2', 'rgba(255,255,255,1)');
+                line.Set('chart.background.grid.color', 'rgba(238,238,238,1)');
+                line.Set('chart.colors', ['rgba(255,0,0,1)']);
+                line.Set('chart.linewidth', 2);
+                line.Set('chart.filled', true);
+                line.Set('chart.hmargin', 5);
+                line.Set('chart.labels', ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+                line.Set('chart.gutter', 40);
+                line.Draw();
+            }
+        </script>
+    </head>
+
+    <body>
+        <div width="80%" height="80%">
+            <canvas id="myLine" width="800" height="800">[Please wait...]</canvas>
+        </div>
+    </body>
+</html>
