@@ -44,7 +44,13 @@ def create_user_slug(row):
     first_name = row.first_name
     last_name = row.last_name
 
-    slug = urlify.urlify(first_name + last_name, 512)    
+    slug = urlify.urlify(first_name + last_name, 512)
+    original_slug = slug
+
+    count = 2
+    while len(db(db.auth_user.slug==slug).select()):
+        slug = original_slug + str(count)
+        count += 1
 
     return slug
 
@@ -67,7 +73,7 @@ db.define_table(
 
     # Custom fields here
     Field('slug', length=512, compute=create_user_slug,
-        unique=True, writable=False, readable=False)
+        unique=True) 
     )
 
 # Required field requirements
