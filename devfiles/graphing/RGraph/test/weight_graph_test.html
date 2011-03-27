@@ -21,14 +21,17 @@
                 line.Set('chart.background.barcolor1', 'rgba(255,255,255,1)');
                 line.Set('chart.background.barcolor2', 'rgba(255,255,255,1)');
                 line.Set('chart.background.grid.color', 'rgba(238,238,238,1)');
-                line.Set('chart.colors', ['rgba(255,0,0,1)']);
-                line.Set('chart.linewidth', 2);
+                line.Set('chart.colors', ['rgba(122, 222, 244, 0.7)']);
+                line.Set('chart.linewidth', 5);
                 line.Set('chart.hmargin', 5);
                 line.Set('chart.labels', labels);
                 line.Set('chart.gutter', 40);
 
                 line.Set('chart.title', 'Brent\'s Weight');
-                line.Set('chart.tickmarks', 'circle');
+                line.Set('chart.tickmarks', 'dot');
+                line.Set('chart.tickmarks.dot.color', 'blue');
+                line.Set('chart.filled', true);
+                line.Set('chart.fillstyle', '#daf1fa');
 
                 line.Draw();
             }
@@ -37,7 +40,7 @@
 
     <body>
         <div>
-            <canvas id="myLine" width="1000" height="800">[Please wait...]</canvas>
+            <canvas id="myLine" width="1000" height="400">[Please wait...]</canvas>
         </div>
     </body>
 </html>
