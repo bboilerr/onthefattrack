@@ -1,0 +1,43 @@
+{{left_sidebar_enabled=right_sidebar_enabled=False}}
+{{extend 'layout.html'}}
+
+<h1>{{=name}}'s Weight</h1>
+
+{{if 'error_message' in globals():}}
+<h3>{{=error_message}}</h3>
+{{else:}}
+
+<script>
+    window.onload = function ()
+    {
+        var data = {{=data}};
+        var labels = {{=labels}};
+
+    
+        var line = new RGraph.Line("myLine", data);
+        line.Set('chart.background.barcolor1', 'rgba(255,255,255,1)');
+        line.Set('chart.background.barcolor2', 'rgba(255,255,255,1)');
+        line.Set('chart.background.grid.color', 'rgba(238,238,238,1)');
+        line.Set('chart.colors', ['rgba(122, 222, 244, 0.7)']);
+        line.Set('chart.linewidth', 5);
+        line.Set('chart.hmargin', 5);
+        line.Set('chart.labels', labels);
+        line.Set('chart.gutter', 40);
+
+        line.Set('chart.tickmarks', 'dot');
+        line.Set('chart.tickmarks.dot.color', 'blue');
+        line.Set('chart.filled', true);
+        line.Set('chart.fillstyle', '#daf1fa');
+
+        line.Draw();
+    }
+</script>
+
+<div>
+    <canvas id="myLine" width="900" height="400">[Please wait...]</canvas>
+</div>
+
+{{pass}}
+
+{{block left_sidebar}}New Left Sidebar Content{{end}}
+{{block right_sidebar}}New Right Sidebar Content{{end}}

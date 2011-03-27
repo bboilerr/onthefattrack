@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{=T.accepted_language or 'en'}}" class="no-js"><!-- no-js need it for modernzr -->
   <head>
-    
     <meta charset="utf-8" />	  	
     <!-- www.phpied.com/conditional-comments-block-downloads/ -->
     <!--[if IE]><![endif]-->    
@@ -59,6 +58,16 @@
     else: right_sidebar_style = 'style="display: none;"'
     style_content = 'style="width: %s"' % width_content
     }}
+
+    <!-- RGraph -->
+    <script src="{{=URL('static','js/RGraph/RGraph.common.core.js')}}" ></script>
+    <script src="{{=URL('static','js/RGraph/RGraph.common.context.js')}}" ></script>
+    <script src="{{=URL('static','js/RGraph/RGraph.common.annotate.js')}}" ></script>
+    <script src="{{=URL('static','js/RGraph/RGraph.common.tooltips.js')}}" ></script>
+    <script src="{{=URL('static','js/RGraph/RGraph.common.zoom.js')}}" ></script>
+    <script src="{{=URL('static','js/RGraph/RGraph.common.resizing.js')}}" ></script>
+    <script src="{{=URL('static','js/RGraph/RGraph.line.js')}}" ></script>
+
   </head>
   
   <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->	
