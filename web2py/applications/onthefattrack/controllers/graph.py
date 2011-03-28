@@ -30,8 +30,5 @@ def index():
                 response_dict['tooltips'] = json.dumps(tooltips)
                 response_dict['labels'] = json.dumps(labels)
 
-                print response_dict['data']
-                print response_dict['labels']
-
             return response_dict
 
