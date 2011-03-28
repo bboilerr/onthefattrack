@@ -10,24 +10,29 @@
 <script>
     window.onload = function ()
     {
-        var data = {{=data}};
-        var labels = {{=labels}};
-
+        var data = {{=XML(data)}};
+        var tooltips = {{=XML(tooltips)}};
+        var labels = {{=XML(labels)}};
     
         var line = new RGraph.Line("myLine", data);
         line.Set('chart.background.barcolor1', 'rgba(255,255,255,1)');
         line.Set('chart.background.barcolor2', 'rgba(255,255,255,1)');
         line.Set('chart.background.grid.color', 'rgba(238,238,238,1)');
         line.Set('chart.colors', ['rgba(122, 222, 244, 0.7)']);
-        line.Set('chart.linewidth', 5);
+        line.Set('chart.linewidth', 3);
         line.Set('chart.hmargin', 5);
         line.Set('chart.labels', labels);
         line.Set('chart.gutter', 40);
 
         line.Set('chart.tickmarks', 'dot');
         line.Set('chart.tickmarks.dot.color', 'blue');
-        line.Set('chart.filled', true);
+        line.Set('chart.filled', false);
         line.Set('chart.fillstyle', '#daf1fa');
+        line.Set('chart.tooltips', tooltips);
+        line.Set('chart.crosshairs', true);
+        line.Set('chart.title.xaxis', 'Date');
+        line.Set('chart.title.yaxis', 'Weight (lbs.)');
+        line.Set('chart.shadow', true);
 
         line.Draw();
     }

@@ -147,3 +147,5 @@ db.define_table(
         Field('weight', 'double'),
         Field('date', 'date', default=date.today()),
         )
+
+db['weight'].user_id.requires = IS_IN_DB(db, 'auth_user.id', '%(first_name)s %(last_name)s (%(id)d)')

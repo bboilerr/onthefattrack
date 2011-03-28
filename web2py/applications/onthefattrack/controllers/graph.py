@@ -23,9 +23,11 @@ def index():
                 response_dict['error_message'] = 'Not enough data points to display a graph.'
             else:
                 weights = map(lambda x: x.weight, weight_rows)
+                tooltips = map(lambda x: "%0.1f" % x.weight, weight_rows)
                 labels = map(lambda x: x.date.strftime('%m.%d.%y'), weight_rows)
 
                 response_dict['data'] = json.dumps(weights)
+                response_dict['tooltips'] = json.dumps(tooltips)
                 response_dict['labels'] = json.dumps(labels)
 
                 print response_dict['data']
