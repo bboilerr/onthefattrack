@@ -1,0 +1,23 @@
+{{if 'form' in globals():}}
+
+{{if request.vars.has_key('weight'):}}
+<script>
+    $(document).ready(function () {
+        var new_weight = {{=request.vars.weight}};
+        var new_date = {{=request.vars.date}};
+
+        g_data.push(new_weight);
+        g_tooltips.push(new_weight);
+        g_labels.push(new_date);
+
+        // Clear the canvas and redraw the graph
+        RGraph.Clear(document.getElementById('myLine'));
+        getGraph('myLine', g_data, g_tooltips, g_labels);
+        
+        return false;
+    });
+</script>
+{{pass}}
+
+{{=form}}
+{{pass}}

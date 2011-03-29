@@ -6,8 +6,6 @@
 # (possibly rewritten) incoming URL
 #
 default_application = 'onthefattrack'    # ordinarily set in base routes.py
-default_controller = 'default'  # ordinarily set in app-specific routes.py
-default_function = 'index'      # ordinarily set in app-specific routes.py
 
 # routes_app is a tuple of tuples.  The first item in each is a regexp that will
 # be used to match the incoming request URL. The second item in the tuple is
@@ -16,10 +14,8 @@ default_function = 'index'      # ordinarily set in app-specific routes.py
 #
 # Example: support welcome, admin, app and myapp, with myapp the default:
 
-
-routes_app = ((r'/(?P<app>welcome|admin|app)\b.*', r'\g<app>'),
-              (r'(.*)', r'myapp'),
-              (r'/?(.*)', r'myapp'))
+routes_app = (('(.*)', r'onthefattrack'),
+              (r'/?(.*)', r'onthefattrack'))
 
 # routes_in is a tuple of tuples.  The first item in each is a regexp that will
 # be used to match the incoming request URL. The second item in the tuple is
@@ -31,16 +27,19 @@ routes_app = ((r'/(?P<app>welcome|admin|app)\b.*', r'\g<app>'),
 #   routes_in=( (r'/static/(?P<file>[\w./-]+)', r'/init/static/\g<file>') )
 #
 
-routes_in = ((r'.*:/favicon.ico', r'/examples/static/favicon.ico'),
-             (r'.*:/robots.txt', r'/examples/static/robots.txt'),
-             ((r'.*http://otherdomain.com.* (?P<any>.*)', r'/app/ctr\g<any>')))
+routes_in = ((r'/p', '/onthefattrack/graph/index/brentrager'),)
+
+#routes_in = (('p/brentrager', 'onthefattrack/graph/index/brentrager'), (r'/p/(?P<user_slug>[A-Za-z-]*)', r'/onthefattrack/graph/index/\g<user_slug>'),
+#        (r'.*:/favicon.ico', r'/examples/static/favicon.ico'),
+#             (r'.*:/robots.txt', r'/examples/static/robots.txt'),
+#             ((r'.*http://otherdomain.com.* (?P<any>.*)', r'/app/ctr\g<any>')))
 
 # routes_out, like routes_in translates URL paths created with the web2py URL()
 # function in the same manner that route_in translates inbound URL paths.
 #
 
-routes_out = ((r'.*http://otherdomain.com.* /app/ctr(?P<any>.*)', r'\g<any>'),
-              (r'/app(?P<any>.*)', r'\g<any>'))
+#routes_out = ((r'.*http://otherdomain.com.* /app/ctr(?P<any>.*)', r'\g<any>'),
+#              (r'/app(?P<any>.*)', r'\g<any>'))
 
 # Error-handling redirects all HTTP errors (status codes >= 400) to a specified
 # path.  If you wish to use error-handling redirects, uncomment the tuple

@@ -8,13 +8,21 @@
 {{else:}}
 
 <script>
-    window.onload = function ()
+    g_data = []
+    g_labels = []
+    g_tooltips = []
+
+    $(document).ready(function ()
     {
-        var data = {{=XML(data)}};
-        var tooltips = {{=XML(tooltips)}};
-        var labels = {{=XML(labels)}};
+        g_data = {{=XML(data)}};
+        g_tooltips = {{=XML(tooltips)}};
+        g_labels = {{=XML(labels)}};
     
-        var line = new RGraph.Line("myLine", data);
+        getGraph('myLine', g_data, g_tooltips, g_labels);
+    });
+
+    function getGraph(id, data, tooltips, labels) {
+        var line = new RGraph.Line(id, data);
         line.Set('chart.background.barcolor1', 'rgba(255,255,255,1)');
         line.Set('chart.background.barcolor2', 'rgba(255,255,255,1)');
         line.Set('chart.background.grid.color', 'rgba(238,238,238,1)');
@@ -36,17 +44,16 @@
 
         line.Draw();
     }
+
 </script>
 
 <div>
     <canvas id="myLine" width="900" height="400">[Please wait...]</canvas>
 </div>
 
-{{if 'form' in globals():}}
-{{=form}}
 {{pass}}
 
-{{pass}}
+{{=LOAD('graph', 'weight_form.load', ajax=True)}}
 
 {{block left_sidebar}}New Left Sidebar Content{{end}}
 {{block right_sidebar}}New Right Sidebar Content{{end}}
