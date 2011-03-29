@@ -149,3 +149,5 @@ db.define_table(
         )
 
 db['weight'].user_id.requires = IS_IN_DB(db, 'auth_user.id', '%(first_name)s %(last_name)s (%(id)d)')
+db['weight'].weight.requires = IS_FLOAT_IN_RANGE(0, 2000)
+db['weight'].date.requires = IS_DATE(format=T('%m/%d/%Y'), error_message=T('must be MM/DD/YYY'))
