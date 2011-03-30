@@ -47,7 +47,9 @@ def index():
                 response_dict['labels'] = json.dumps(labels)
 
             if auth.user_id == user_id:
-                form = crud.create(db.weight, next=URL('index/%s' % slug))
+                crud.messages.record_created = 'Weight Added'
+                form = crud.create(db.weight, next=URL('index/%s' % slug),
+                        message='Weight Added')
 
                 response_dict['form'] = form
 

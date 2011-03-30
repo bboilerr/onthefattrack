@@ -55,8 +55,6 @@ function getGraph(id, data, tooltips, labels) {
 
         indices.push(label_length - 1);
 
-        alert(indices);
-
         while (indices.length > 0) {
             var index = parseInt(Math.round(indices.shift()));
             change_labels[index] = labels[index];
