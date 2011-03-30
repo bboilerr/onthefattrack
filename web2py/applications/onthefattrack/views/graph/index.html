@@ -8,43 +8,15 @@
 {{else:}}
 
 <script>
-    g_data = []
-    g_labels = []
-    g_tooltips = []
-
     $(document).ready(function ()
     {
         g_data = {{=XML(data)}};
         g_tooltips = {{=XML(tooltips)}};
         g_labels = {{=XML(labels)}};
+        g_graph_id = 'myLine';
     
-        getGraph('myLine', g_data, g_tooltips, g_labels);
+        getGraph(g_graph_id, g_data, g_tooltips, g_labels);
     });
-
-    function getGraph(id, data, tooltips, labels) {
-        var line = new RGraph.Line(id, data);
-        line.Set('chart.background.barcolor1', 'rgba(255,255,255,1)');
-        line.Set('chart.background.barcolor2', 'rgba(255,255,255,1)');
-        line.Set('chart.background.grid.color', 'rgba(238,238,238,1)');
-        line.Set('chart.colors', ['rgba(122, 222, 244, 0.7)']);
-        line.Set('chart.linewidth', 3);
-        line.Set('chart.hmargin', 5);
-        line.Set('chart.labels', labels);
-        line.Set('chart.gutter', 60);
-
-        line.Set('chart.tickmarks', 'dot');
-        line.Set('chart.tickmarks.dot.color', 'blue');
-        line.Set('chart.filled', false);
-        line.Set('chart.fillstyle', '#daf1fa');
-        line.Set('chart.tooltips', tooltips);
-        line.Set('chart.crosshairs', true);
-        line.Set('chart.title.xaxis', 'Date');
-        line.Set('chart.title.yaxis', 'Weight (lbs.)');
-        line.Set('chart.shadow', true);
-
-        line.Draw();
-    }
-
 </script>
 
 <div>

@@ -1,26 +1,13 @@
 {{if 'form' in globals():}}
 
-{{if request.vars.has_key('weight'):}}
+{{if request.vars.has_key('weight') and request.vars.has_key('date') and not form.errors:}}
 <script>
     $(document).ready(function () {
         var new_weight = {{=XML(request.vars.weight)}};
         var new_date = new Date('{{=XML(request.vars.date)}}').f('ddNNNyy')
 
-        g_data.push(new_weight);
-
-        g_labels.pop()
-        g_labels.push('')
-        g_labels.push(new_date);
-
-        tooltip = sprintf("%s: %0.1f lbs.", new_date, new_weight);
-
-        g_tooltips.push(tooltip);
-
-        // Clear the canvas and redraw the graph
-        RGraph.Clear(document.getElementById('myLine'));
-        getGraph('myLine', g_data, g_tooltips, g_labels);
-        
-        return false;
+        updateGraph(g_graph_id, new_weight, new_date, 
+            g_data, g_labels, g_tooltips);
     });
 </script>
 {{pass}}

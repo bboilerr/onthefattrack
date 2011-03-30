@@ -28,19 +28,19 @@ def index():
                 labels = map(lambda x: x.date.strftime('%d%b%y'), weight_rows)
 
                 # Set just the first, middle, and last label.
-                labels_len = len(labels)
-                labels_mid = int(round(labels_len/2))
-                final_labels = []
-                final_labels.append(labels[0])
-                final_labels.append(labels[labels_mid])
-                final_labels.append(labels[labels_len-1])
+#                 labels_len = len(labels)
+#                 labels_mid = int(round(labels_len/2))
+#                 final_labels = []
+#                 final_labels.append(labels[0])
+#                 final_labels.append(labels[labels_mid])
+#                 final_labels.append(labels[labels_len-1])
 
                 # Clear labels then set just the 3
-                labels = map(lambda x: '', labels)
+#                 labels = map(lambda x: '', labels)
 
-                labels[0] = final_labels[0]
-                labels[labels_mid] = final_labels[1]
-                labels[labels_len-1] = final_labels[2]
+#                 labels[0] = final_labels[0]
+#                 labels[labels_mid] = final_labels[1]
+#                 labels[labels_len-1] = final_labels[2]
 
                 response_dict['data'] = json.dumps(weights)
                 response_dict['tooltips'] = json.dumps(tooltips)
