@@ -18,8 +18,8 @@ def index():
             user_id = row.id
             response_dict['name'] = row.first_name + ' ' + row.last_name
 
-            weight_rows = db(db.weight.user_id==user_id).select()
-            weight_rows = weight_rows.sort(lambda row: row.date);
+            weight_rows = db(db.weight.user_id==user_id).select(
+                    orderby=db.weight.date)
 
             if (len(weight_rows) < 2):
                 response_dict['error_message'] = 'Not enough data points to display a graph.'
