@@ -55,8 +55,6 @@ function getGraph(id, data, tooltips, labels) {
 
         indices.push(label_length - 1);
 
-        alert(indices);
-
         while (indices.length > 0) {
             var index = parseInt(Math.round(indices.shift()));
             change_labels[index] = labels[index];
@@ -95,7 +93,9 @@ function updateGraph(id, new_weight, new_date, data, tooltips, labels) {
 
     g_tooltips.push(tooltip);
 
-    // Clear the canvas and redraw the graph
-    RGraph.Clear(document.getElementById('myLine'));
-    getGraph('myLine', g_data, g_tooltips, g_labels);
+    if ($('#myLine').length) {
+        // Clear the canvas and redraw the graph
+        RGraph.Clear(document.getElementById('myLine'));
+        getGraph('myLine', g_data, g_tooltips, g_labels);
+    }
 }
