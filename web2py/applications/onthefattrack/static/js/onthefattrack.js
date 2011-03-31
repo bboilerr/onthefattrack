@@ -93,7 +93,9 @@ function updateGraph(id, new_weight, new_date, data, tooltips, labels) {
 
     g_tooltips.push(tooltip);
 
-    // Clear the canvas and redraw the graph
-    RGraph.Clear(document.getElementById('myLine'));
-    getGraph('myLine', g_data, g_tooltips, g_labels);
+    if ($('#myLine').length) {
+        // Clear the canvas and redraw the graph
+        RGraph.Clear(document.getElementById('myLine'));
+        getGraph('myLine', g_data, g_tooltips, g_labels);
+    }
 }

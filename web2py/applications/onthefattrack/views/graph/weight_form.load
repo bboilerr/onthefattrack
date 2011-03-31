@@ -8,6 +8,10 @@
 
         updateGraph(g_graph_id, new_weight, new_date, 
             g_data, g_labels, g_tooltips);
+
+        if (g_data.length == 2) {
+            location.reload(true);
+        }
     });
 </script>
 {{pass}}
