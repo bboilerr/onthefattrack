@@ -23,7 +23,7 @@ print "GOT HERE!"
 
 routes_in = (
         (r'^/?$', '/onthefattrack/default/index'),
-        (r'^/?p/(?P<user_slug>[A-Za-z\-]+)', '/onthefattrack/graph/index/$user_slug'),
+        (r'^/?p/(?P<user_slug>[A-Za-z\-]+)', '/onthefattrack/profile/index/$user_slug'),
         (r'^//.*', '/onthefattrack/default/index'),
         )
 
@@ -43,7 +43,7 @@ routes_in = (
 
 routes_out = (
         ('/onthefattrack/default/index', '/'),
-        (r'/onthefattrack/graph/index/(?P<user_slug>[A-Za-z\-]+)', '/p/$user_slug'),
+        (r'/onthefattrack/profile/index/(?P<user_slug>[A-Za-z\-]+)', '/p/$user_slug'),
         )
 
 # Error-handling redirects all HTTP errors (status codes >= 400) to a specified
