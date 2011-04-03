@@ -5,16 +5,26 @@
 
 {{if 'error_message' in globals():}}
 <h3>{{=error_message}}</h3>
-{{=weight_table}}
+
+{{if len(weight_rows):
+first_row = weight_rows[0]
+weight = '%0.1f' % first_row.weight
+date = first_row.date.strftime('%d%b%y')
+}}
+First weight was {{=weight}} {{=weight_unit}} on {{=date}}
+{{pass}}
+
 {{else:}}
 
 <script>
     $(document).ready(function ()
     {
+        g_data_length = {{=data_length}};
         g_data = {{=XML(data)}};
         g_tooltips = {{=XML(tooltips)}};
         g_labels = {{=XML(labels)}};
         g_graph_id = 'myLine';
+        g_weight_unit = '{{=weight_unit}}';
     
         getGraph(g_graph_id, g_data, g_tooltips, g_labels);
     });
@@ -26,7 +36,7 @@
 
 {{pass}}
 
-{{=LOAD('graph', 'weight_form.load', ajax=True)}}
+{{=LOAD('profile', 'weight_form.load', ajax=True)}}
 
 {{block left_sidebar}}New Left Sidebar Content{{end}}
 {{block right_sidebar}}New Right Sidebar Content{{end}}

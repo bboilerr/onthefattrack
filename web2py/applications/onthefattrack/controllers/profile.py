@@ -16,18 +16,22 @@ def index():
             row = rows[0]
 
             user_id = row.id
+            user_unit = row.weight_unit
+            response_dict['weight_unit'] = user_unit
             response_dict['name'] = row.first_name + ' ' + row.last_name
 
-            weight_rows = db(db.weight.user_id==user_id).select(
-                    orderby=db.weight.date)
+            weight_rows = db(db.weight.user_id==user_id).select()
+            weight_rows.sort(lambda row : row.date)
+            num_weight_rows = len(weight_rows)
+            response_dict['data_length'] = num_weight_rows
 
-            if (len(weight_rows) < 2):
+            if (num_weight_rows < 2):
                 response_dict['error_message'] = 'Not enough data points to display a graph.'
-                response_dict['weight_table'] = crud.select(db.weight, db.weight.user_id==user_id)
+                response_dict['weight_rows'] = weight_rows
             else:
                 weights = map(lambda x: x.weight, weight_rows)
-                tooltips = map(lambda x: "%s: %0.1f lbs." % (x.date.strftime('%d%b%y'), x.weight), weight_rows)
-                labels = map(lambda x: x.date.strftime('%d%b%y'), weight_rows)
+                tooltips = map(lambda x: "%s: %0.1f %s" % (x.date.strftime('%d %b %Y'), x.weight, user_unit), weight_rows)
+                labels = map(lambda x: x.date.strftime('%d %b %Y'), weight_rows)
 
                 response_dict['data'] = json.dumps(weights)
                 response_dict['tooltips'] = json.dumps(tooltips)

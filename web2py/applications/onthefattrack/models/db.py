@@ -73,7 +73,8 @@ db.define_table(
 
     # Custom fields here
     Field('slug', length=512, compute=create_user_slug,
-        writable=False, readable=False, unique=True) 
+        writable=False, readable=False, unique=True),
+    Field('weight_unit', length=10),
     )
 
 # Required field requirements
@@ -86,6 +87,7 @@ custom_auth_table.password.requires = [IS_STRONG(special=0), CRYPT()]
 custom_auth_table.email.requires = [
         IS_EMAIL(error_message=auth.messages.invalid_email),
         IS_NOT_IN_DB(db, custom_auth_table.email)]
+custom_auth_table.weight_unit.requires = IS_IN_SET(['lbs', 'kgs', 'stone'])
 
 # Custom field requirements
 custom_auth_table.slug.requires = [
@@ -139,16 +141,3 @@ auth.settings.captcha = Recaptcha(request,
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 
-from datetime import date
-
-db.define_table(
-        'weight',
-        Field('user_id', db.auth_user, default=auth.user.id if auth.user else None,
-            writable=False, readable=False),
-        Field('weight', 'double'),
-        Field('date', 'date', default=date.today()),
-        )
-
-db['weight'].user_id.requires = IS_IN_DB(db, 'auth_user.id', '%(first_name)s %(last_name)s (%(id)d)')
-db['weight'].weight.requires = [IS_FLOAT_IN_RANGE(0, 2000), IS_NOT_EMPTY()]
-db['weight'].date.requires = IS_DATE(format=T('%m/%d/%Y'), error_message=T('must be MM/DD/YYY'))

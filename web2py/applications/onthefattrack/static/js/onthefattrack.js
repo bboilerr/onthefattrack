@@ -2,6 +2,8 @@ g_data = []
 g_labels = []
 g_tooltips = []
 g_graph_id = ''
+g_data_length = 0
+g_weight_unit = 'lbs'
 
 // Add array map
 if (!Array.prototype.map)
@@ -33,7 +35,7 @@ function getGraph(id, data, tooltips, labels) {
 
     var even = (label_length % 2) == 0;
     var label_count = even ? 4 : 5;
-    
+
     if (label_count < change_labels.length) {
         var indices = [];
         indices.push(0);
@@ -59,6 +61,8 @@ function getGraph(id, data, tooltips, labels) {
             var index = parseInt(Math.round(indices.shift()));
             change_labels[index] = labels[index];
         }
+
+        labels = change_labels;
     }
 
     var line = new RGraph.Line(id, data);
@@ -68,7 +72,7 @@ function getGraph(id, data, tooltips, labels) {
     line.Set('chart.colors', ['rgba(122, 222, 244, 0.7)']);
     line.Set('chart.linewidth', 3);
     line.Set('chart.hmargin', 5);
-    line.Set('chart.labels', change_labels);
+    line.Set('chart.labels', labels);
     line.Set('chart.gutter', 60);
 
     line.Set('chart.tickmarks', 'dot');
@@ -78,7 +82,7 @@ function getGraph(id, data, tooltips, labels) {
     line.Set('chart.tooltips', tooltips);
     line.Set('chart.crosshairs', true);
     line.Set('chart.title.xaxis', 'Date');
-    line.Set('chart.title.yaxis', 'Weight (lbs.)');
+    line.Set('chart.title.yaxis', sprintf('Weight (%s)', g_weight_unit));
     line.Set('chart.shadow', true);
 
     line.Draw();
@@ -89,7 +93,7 @@ function updateGraph(id, new_weight, new_date, data, tooltips, labels) {
 
     g_labels.push(new_date);
 
-    tooltip = sprintf("%s: %0.1f lbs.", new_date, new_weight);
+    tooltip = sprintf("%s: %0.1f %s", new_date, new_weight, g_weight_unit);
 
     g_tooltips.push(tooltip);
 

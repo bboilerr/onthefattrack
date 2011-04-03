@@ -4,12 +4,14 @@
 <script>
     $(document).ready(function () {
         var new_weight = {{=XML(request.vars.weight)}};
-        var new_date = new Date('{{=XML(request.vars.date)}}').f('ddNNNyy')
+        var new_date = new Date('{{=XML(request.vars.date)}}').f('dd NNN yyyy');
 
         updateGraph(g_graph_id, new_weight, new_date, 
             g_data, g_labels, g_tooltips);
 
-        if (g_data.length == 2) {
+        ++g_data_length;
+
+        if (g_data_length <= 2) {
             location.reload(true);
         }
     });
