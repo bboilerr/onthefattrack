@@ -74,7 +74,6 @@ db.define_table(
     # Custom fields here
     Field('slug', length=512, compute=create_user_slug,
         writable=False, readable=False, unique=True),
-    Field('weight_unit', length=10),
     )
 
 # Required field requirements
@@ -87,12 +86,25 @@ custom_auth_table.password.requires = [IS_STRONG(special=0), CRYPT()]
 custom_auth_table.email.requires = [
         IS_EMAIL(error_message=auth.messages.invalid_email),
         IS_NOT_IN_DB(db, custom_auth_table.email)]
-custom_auth_table.weight_unit.requires = IS_IN_SET(['lbs', 'kgs', 'stone'])
 
 # Custom field requirements
 custom_auth_table.slug.requires = [
         IS_SLUG(),
         IS_NOT_IN_DB(db, custom_auth_table.slug)]
+
+# Virtual Fields
+class AuthUserVirtualFields(object):
+    def get_user_profile(self):
+        rows = db(db.user_profile.user_id==self.auth_user.id).select()
+        if (len(rows)):
+            return rows.first()
+        else:
+            user_profile_id = db.user_profile.insert(user_id=self.auth_user.id)
+
+            return db(db.user_profile.id==user_profile_id).select().first()
+
+custom_auth_table.virtualfields.append(AuthUserVirtualFields())
+        
 
 auth.settings.table_user = custom_auth_table # tell auth to use custom_auth_table
 

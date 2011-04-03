@@ -13,10 +13,12 @@ def index():
         else:
             response_dict = dict()
 
-            row = rows[0]
+            row = rows.first()
 
             user_id = row.id
-            user_unit = row.weight_unit
+            response_dict['user_id'] = user_id
+            user_unit = row.get_user_profile.weight_unit
+
             response_dict['weight_unit'] = user_unit
             response_dict['name'] = row.first_name + ' ' + row.last_name
 
@@ -46,12 +48,16 @@ def index():
 
             return response_dict
 
-@auth.requires_login()
 def weight_form():
     response_dict = dict()
+    if len(request.args) == 0:
+        pass
+    else:
+        user_id = int(request.args[0])
 
-    form = crud.create(db.weight)
-    response_dict['form'] = form
+        if (auth.user_id == user_id):
+            form = crud.create(db.weight)
+            response_dict['form'] = form
 
     return response_dict
 

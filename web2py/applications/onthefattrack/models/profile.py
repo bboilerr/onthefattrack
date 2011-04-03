@@ -1,13 +1,20 @@
 from datetime import date
 
 # Profile Table
+db.define_table(
+        'user_profile',
+        Field('user_id', db.auth_user, default=auth.user.id if auth.user else None,
+            writable=False, readable=False),
+        Field('weight_unit', length=10, default='lbs'),
+        )
 
+db['user_profile'].weight_unit.requires = IS_IN_SET(['lbs', 'kgs', 'stone'])
 
 # Weight Table
 db.define_table(
         'weight',
         Field('user_id', db.auth_user, default=auth.user.id if auth.user else None,
-            writable=False, readable=False),
+            writable=False, readable=False, unique=True),
         Field('weight', 'double'),
         Field('date', 'date', default=date.today()),
         )
