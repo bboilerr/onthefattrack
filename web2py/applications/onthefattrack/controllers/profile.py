@@ -61,4 +61,10 @@ def weight_form():
 
     return response_dict
 
+def comments():
+    response_dict = dict()
+    if auth.user_id:
+        form = crud.create(db.post)
+        response_dict['form'] = form
+
 
