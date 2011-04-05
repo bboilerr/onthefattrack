@@ -40,6 +40,17 @@ mail.settings.server = 'logging' or 'smtp.gmail.com:587'  # your SMTP server
 mail.settings.sender = 'you@gmail.com'         # your email
 mail.settings.login = 'username:password'      # your credentials or None
 
+# Janrain
+from gluon.contrib.login_methods.rpx_account import RPXAccount
+auth.settings.actions_disabled=['register','change_password','request_reset_password']
+auth.settings.login_form = RPXAccount(request,
+    api_key='e9d4614579ac070748f11b635bc515157db893a3',
+    domain='onthefattrack',
+    url = "http://localhost:8080/%s/default/user/login" % request.application)
+
+
+# Custom Auth Table
+
 def create_user_slug(row):
     first_name = row.first_name
     last_name = row.last_name

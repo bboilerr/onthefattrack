@@ -19,8 +19,6 @@ default_function = 'index'      # ordinarily set in app-specific routes.py
 #   routes_in=( (r'/static/(?P<file>[\w./-]+)', r'/init/static/\g<file>') )
 #
 
-print "GOT HERE!"
-
 routes_in = (
         (r'^/?$', '/onthefattrack/default/index'),
         (r'^/?p/(?P<user_slug>[A-Za-z0-9\-]+)', '/onthefattrack/profile/index/$user_slug'),
