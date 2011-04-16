@@ -21,7 +21,7 @@ default_function = 'index'      # ordinarily set in app-specific routes.py
 
 routes_in = (
         (r'^/?$', '/onthefattrack/default/index'),
-        (r'^/?p/(?P<user_slug>[A-Za-z0-9\-]+)', '/onthefattrack/profile/index/$user_slug'),
+        (r'^/?p/(?P<user_slug>[A-Za-z0-9\-]+)', '/onthefattrack/page/index/$user_slug'),
         (r'^//.*', '/onthefattrack/default/index'),
         )
 
@@ -41,7 +41,7 @@ routes_in = (
 
 routes_out = (
         ('/onthefattrack/default/index', '/'),
-        (r'/onthefattrack/profile/index/(?P<user_slug>[A-Za-z0-9\-]+)', '/p/$user_slug'),
+        (r'/onthefattrack/page/index/(?P<user_slug>[A-Za-z0-9\-]+)', '/p/$user_slug'),
         )
 
 # Error-handling redirects all HTTP errors (status codes >= 400) to a specified

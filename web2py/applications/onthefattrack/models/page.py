@@ -8,7 +8,8 @@ db.define_table(
         Field('weight_unit', length=10, default='lbs'),
         )
 
-db['user_profile'].weight_unit.requires = IS_IN_SET(['lbs', 'kgs', 'stone'])
+db.user_profile.user_id.requires = IS_IN_DB(db, db.auth_user.id)
+db.user_profile.weight_unit.requires = IS_IN_SET(['lbs', 'kgs', 'stone'])
 
 # Weight Table
 db.define_table(
@@ -19,13 +20,24 @@ db.define_table(
         Field('date', 'date', default=date.today()),
         )
 
-db['weight'].weight.requires = [IS_FLOAT_IN_RANGE(0, 2000), IS_NOT_EMPTY()]
-db['weight'].date.requires = IS_DATE(format=T('%d %b %Y'), error_message=T('must be MM/DD/YYY'))
+db.weight.user_id.requires = IS_IN_DB(db, db.auth_user.id)
+db.weight.weight.requires = [IS_FLOAT_IN_RANGE(0, 2000), IS_NOT_EMPTY()]
+db.weight.date.requires = IS_DATE(format=T('%d %b %Y'), error_message=T('must be MM/DD/YYY'))
+
+def get_page_id():
+    ret_val = None
+
+    if 'page_id' in request.post_vars:
+        ret_val = request.post_vars.page_id
+
+    return ret_val
 
 # Post Table
 db.define_table(
         'post',
-        Field('user_id', db.auth_user, default=auth.user_id if auth.user else None,
+        Field('author_id', db.auth_user, default=auth.user_id if auth.user else None,
+            writable=False, readable=False),
+        Field('page_id', db.auth_user, default=get_page_id,
             writable=False, readable=False),
         Field('date', 'datetime', default=datetime.now(),
             writable=False, readable=False),
@@ -34,10 +46,13 @@ db.define_table(
         Field('text', 'text'),
         )
 
+db.post.author_id.requires = IS_IN_DB(db, db.auth_user.id)
+db.post.page_id.requires = IS_IN_DB(db, db.auth_user.id)
+
 # Comment Table
 db.define_table(
         'comment',
-        Field('user_id', db.auth_user, default=auth.user_id if auth.user else None,
+        Field('author_id', db.auth_user, default=auth.user_id if auth.user else None,
             writable=False, readable=False),
         Field('post_id', db.post,
             writable=False, readable=False),
@@ -46,3 +61,4 @@ db.define_table(
         Field('text', 'text'),
         )
 
+db.comment.author_id.requires = IS_IN_DB(db, db.auth_user.id)

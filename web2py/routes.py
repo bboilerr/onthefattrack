@@ -27,7 +27,7 @@ routes_app = (('(.*)', r'onthefattrack'),
 #   routes_in=( (r'/static/(?P<file>[\w./-]+)', r'/init/static/\g<file>') )
 #
 
-routes_in = ((r'/p', '/onthefattrack/graph/index/brentrager'),)
+routes_in = ()
 
 #routes_in = (('p/brentrager', 'onthefattrack/graph/index/brentrager'), (r'/p/(?P<user_slug>[A-Za-z-]*)', r'/onthefattrack/graph/index/\g<user_slug>'),
 #        (r'.*:/favicon.ico', r'/examples/static/favicon.ico'),

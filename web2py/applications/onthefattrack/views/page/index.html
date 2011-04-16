@@ -36,6 +36,6 @@ First weight was {{=weight}} {{=weight_unit}} on {{=date}}
 
 {{pass}}
 
-{{=LOAD('profile', 'weight_form.load', ajax=True, args=[user_id,])}}
+{{=LOAD('page', 'weight_form.load', ajax=True, args=[user_id,])}}
 
-{{=LOAD('profile', 'comments.load', ajax=True, args=[user_id,])}}
+{{=LOAD('page', 'post_form.load', ajax=True, args=[user_id,])}}
