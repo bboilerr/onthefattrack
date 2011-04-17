@@ -46,7 +46,7 @@ auth.settings.actions_disabled=['register','change_password','request_reset_pass
 auth.settings.login_form = RPXAccount(request,
     api_key='e9d4614579ac070748f11b635bc515157db893a3',
     domain='onthefattrack',
-    url = "http://localhost:8080/%s/default/user/login" % request.application)
+    url = "http://onthefattrack.appspot.com/%s/default/user/login" % request.application)
 
 
 # Custom Auth Table

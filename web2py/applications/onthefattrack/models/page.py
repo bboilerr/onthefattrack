@@ -22,7 +22,7 @@ db.define_table(
 
 db.weight.user_id.requires = IS_IN_DB(db, db.auth_user.id)
 db.weight.weight.requires = [IS_FLOAT_IN_RANGE(0, 2000), IS_NOT_EMPTY()]
-db.weight.date.requires = IS_DATE(format=T('%d %b %Y'), error_message=T('must be MM/DD/YYY'))
+db.weight.date.requires = IS_DATE(format=T('%Y-%m-%d'), error_message=T('must be YYYY-MM-DD'))
 
 def get_page_id():
     ret_val = None
