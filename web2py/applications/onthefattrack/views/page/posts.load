@@ -1,0 +1,15 @@
+{{include 'page/functions.html'}}
+{{if 'posts' in globals():}}
+<h1>
+Posts
+</h1>
+{{pass}}
+<div id="posts">
+{{if 'posts' in globals():}}
+    {{for row in posts:}}
+        {{get_single_post(row.get_author.get_name, row.text, row.date)}}
+    {{pass}}
+</table>
+{{pass}}
+</div>
+

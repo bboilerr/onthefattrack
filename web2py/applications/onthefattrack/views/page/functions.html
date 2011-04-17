@@ -1,0 +1,13 @@
+{{def get_single_post(name, text, date):}}
+<div class="post">
+    <h4>
+        {{=name}}
+    </h4>
+    <span class="date">
+        {{=date.strftime('on %d %b %Y at %I:%M %p')}}
+    </span>
+    <p>
+        {{=MARKMIN(text)}}
+    </p>
+</div>
+{{return}}

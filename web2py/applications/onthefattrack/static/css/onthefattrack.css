@@ -1,0 +1,10 @@
+div#posts h4
+{
+    color: #009BBD;
+}
+
+div#posts span.date
+{
+    font-size: 75%;
+    font-style: italic;
+}

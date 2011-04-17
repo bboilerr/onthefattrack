@@ -28,7 +28,7 @@ def get_page_id():
     ret_val = None
 
     if 'page_id' in request.post_vars:
-        ret_val = request.post_vars.page_id
+        ret_val = int(request.post_vars.page_id)
 
     return ret_val
 
@@ -46,8 +46,23 @@ db.define_table(
         Field('text', 'text'),
         )
 
+# Virtual Fields
+class PostVirtualFields(object):
+    def get_author(self):
+        ret_val = None
+
+        rows = db(db.auth_user.id==self.post.author_id).select()
+        if (len(rows)):
+            ret_val = rows.first()
+
+        return ret_val
+
+db.post.virtualfields.append(PostVirtualFields())
+
+
 db.post.author_id.requires = IS_IN_DB(db, db.auth_user.id)
 db.post.page_id.requires = IS_IN_DB(db, db.auth_user.id)
+db.post.text.requires = IS_NOT_EMPTY()
 
 # Comment Table
 db.define_table(

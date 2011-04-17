@@ -1,6 +1,6 @@
 {{if 'form' in globals():}}
 
-{{if request.vars.has_key('weight') and request.vars.has_key('date') and not form.errors:}}
+{{if 'weight' in request.vars and 'date' in request.vars and not form.errors:}}
 <script>
     $(document).ready(function () {
         var new_weight = {{=XML(request.vars.weight)}};

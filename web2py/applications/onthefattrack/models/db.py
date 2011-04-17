@@ -114,6 +114,10 @@ class AuthUserVirtualFields(object):
 
             return db(db.user_profile.id==user_profile_id).select().first()
 
+    def get_name(self):
+        return self.auth_user.first_name + ' ' + self.auth_user.last_name
+
+
 custom_auth_table.virtualfields.append(AuthUserVirtualFields())
         
 

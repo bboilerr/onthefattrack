@@ -20,7 +20,7 @@ def index():
             user_unit = row.get_user_profile.weight_unit
 
             response_dict['weight_unit'] = user_unit
-            response_dict['name'] = row.first_name + ' ' + row.last_name
+            response_dict['name'] = row.get_name
 
             weight_rows = db(db.weight.user_id==user_id).select()
             weight_rows.sort(lambda row : row.date)
@@ -71,7 +71,24 @@ def post_form():
         if (auth.user_id):
             form = crud.create(db.post)
             form.insert(0, INPUT(_type='text', _hidden='true', _name='page_id', _value=user_id))
+
+            user = db(db.auth_user.id == auth.user_id).select().first()
+            form.insert(0, INPUT(_type='text', _hidden='true', _name='name', _value=user.get_name))
+
             response_dict['form'] = form
+
+    return response_dict
+
+def posts():
+    response_dict = dict()
+    if len(request.args) == 0:
+        pass
+    else:
+        user_id = int(request.args[0])
+
+        posts = db(db.post.page_id==user_id).select()
+        posts = posts.sort(lambda r: r.date, reverse=True)
+        response_dict['posts'] = posts
 
     return response_dict
 

@@ -9,7 +9,7 @@
 	 Remove this if you use the .htaccess -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>{{=response.title or request.application}}</title>
+    <title>On The Fat Track</title>
     
     <!-- http://dev.w3.org/html5/markup/meta.name.html -->
     <meta name="application-name" content="{{=request.application}}" />	
@@ -43,6 +43,7 @@
     {{response.files.append(URL('static','css/base.css'))}}
     {{response.files.append(URL('static','css/superfish.css'))}}
     {{response.files.append(URL('static','js/superfish.js'))}}
+    {{response.files.append(URL('static','css/onthefattrack.css'))}}
     {{#------ include web2py specific js code (jquery, calendar, form stuff) ------}}
     {{include 'web2py_ajax.html'}}
 
@@ -89,7 +90,7 @@
 	<div id="header"> <!-- header and login nav -->
 	  {{block header}} <!-- this is default header -->
 	  {{try:}}{{=auth.navbar(action=URL('default','user'))}}{{except:pass}}		          
-	  <h1><span id="appname">{{=request.application.capitalize()}}</span>App</h1>
+	  <h1><span id="appname"></span>On The Fat Track</h1>
 	  <div style="clear: both;"></div><!-- Clear the divs -->
 	  {{end}}				  					  
 	</div><!-- header  -->
