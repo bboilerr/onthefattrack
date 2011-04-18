@@ -41,12 +41,27 @@ mail.settings.sender = 'you@gmail.com'         # your email
 mail.settings.login = 'username:password'      # your credentials or None
 
 # Janrain
+
+# Get login URL for different dev environments
+import os
+
+base_url = 'http://localhost:8080'
+env_name = 'SERVER_SOFTWARE'
+if env_name in os.environ:
+    server_software = os.environ[env_name]
+
+    if server_software.startswith('Development'):
+        base_url='http://localhost:8000'
+    elif server_software.startswith('Google App Engine'):
+        base_url='http://onthefattrack.appspot.com'
+
+
 from gluon.contrib.login_methods.rpx_account import RPXAccount
 auth.settings.actions_disabled=['register','change_password','request_reset_password']
 auth.settings.login_form = RPXAccount(request,
     api_key='e9d4614579ac070748f11b635bc515157db893a3',
     domain='onthefattrack',
-    url = "http://onthefattrack.appspot.com/%s/default/user/login" % request.application)
+    url = "%s/%s/default/user/login" % (base_url, request.application))
 
 
 # Custom Auth Table
