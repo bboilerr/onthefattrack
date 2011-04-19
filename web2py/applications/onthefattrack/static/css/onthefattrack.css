@@ -1,25 +1,33 @@
-div#posts h4 a
-{
-    color: #009BBD;
-}
-
-div#posts a
+a, a:active, a:visited 
 {
     text-decoration: none;
+    color:#009BBD; 
 }
 
-div#posts a:hover
+a:hover 
+{ 
+    text-decoration: underline;
+    color:#0086A3; 
+}
+
+a.action, a.action:active, a.action:visited
 {
     text-decoration: underline;
+    color: #607890;
 }
 
-div#posts span.date
+a.action:hover
 {
-    font-size: 75%;
-    font-style: italic;
+    color: #036;
 }
 
 div.post
 {
     clear: both;
+}
+
+div.post div.info
+{
+    font-size: 85%;
+    font-style: italic;
 }

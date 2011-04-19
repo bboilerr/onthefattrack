@@ -73,7 +73,7 @@ function getGraph(id, data, tooltips, labels) {
     line.Set('chart.linewidth', 3);
     line.Set('chart.hmargin', 5);
     line.Set('chart.labels', labels);
-    line.Set('chart.gutter', 60);
+    line.Set('chart.gutter', 50);
 
     line.Set('chart.tickmarks', 'dot');
     line.Set('chart.tickmarks.dot.color', 'blue');

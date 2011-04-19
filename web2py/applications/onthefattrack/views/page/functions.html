@@ -1,16 +1,20 @@
-{{def get_single_post(name, slug, text, date):}}
+{{def get_single_post(user, post, show_name=True):}}
 <div class="post">
+{{if show_name:}}
     <h4>
-        <a href="{{=URL('onthefattrack', 'page', 'index', args=(slug,))}}">
-            {{=name}}
+        <a href="{{=URL('onthefattrack', 'page', 'index', args=(user.slug,))}}">
+            {{=user.get_name}}
         </a>
     </h4>
-    <span class="date">
-        {{=date.strftime('on %d %b %Y at %I:%M %p')}} - 
-        <a href="">comment</a>
-    </span>
+{{pass}}
+    <div class="info">
+        <span class="date">
+            <a href="{{=URL('onthefattrack', 'page', 'singlepost', args=(user.slug,post.id))}}">{{=post.date.strftime('on %d %b %Y at %I:%M %p')}}</a> 
+        </span> -
+        <a class="action" href="">comment</a>
+    </div>
     <p>
-        {{=MARKMIN(text)}}
+        {{=MARKMIN(post.text)}}
     </p>
 </div>
 {{return}}

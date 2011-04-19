@@ -16,7 +16,7 @@
     {{pass}}
 
     <div id="post_link">
-        <a href="javascript:showPostForm();">Add Post</a>
+        <a class="action" href="javascript:showPostForm();">Add Post</a>
     </div>
     <div id="post_form" style="display:none">
         {{=form}}

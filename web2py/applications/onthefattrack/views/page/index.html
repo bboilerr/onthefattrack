@@ -1,7 +1,11 @@
 {{left_sidebar_enabled=right_sidebar_enabled=False}}
 {{extend 'layout.html'}}
 
-<h1>{{=name}}'s Weight</h1>
+<div id="page_title">
+    <h1>
+        <a href="{{=URL('index', args=(user.slug,))}}">{{=user.get_name}}</a>'s Weight
+    </h1>
+</div>
 
 {{if 'error_message' in globals():}}
 <h3>{{=error_message}}</h3>
@@ -36,6 +40,6 @@ First weight was {{=weight}} {{=weight_unit}} on {{=date}}
 
 {{pass}}
 
-{{=LOAD('page', 'weight_form.load', ajax=True, args=[user_id,])}}
+{{=LOAD('page', 'weight_form.load', ajax=True, args=[user.id,])}}
 
-{{=LOAD('page', 'posts.load', ajax=True, args=[user_id,])}}
+{{=LOAD('page', 'posts.load', ajax=True, args=[user.id,])}}

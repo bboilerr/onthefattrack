@@ -59,6 +59,15 @@ class PostVirtualFields(object):
 
         return ret_val
 
+    def get_page_user(self):
+        ret_val = None
+
+        rows = db(db.auth_user.id==self.post.page_id).select()
+        if (len(rows)):
+            ret_val = rows.first()
+
+        return ret_val
+
 db.post.virtualfields.append(PostVirtualFields())
 
 
