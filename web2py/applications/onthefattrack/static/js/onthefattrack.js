@@ -127,3 +127,13 @@ function updatePosts(name, slug, date, text) {
 
     $('#posts').prepend(post);
 }
+
+function showPostForm() {
+    $('#post_link').hide();
+    $('#post_form').show();
+}
+
+function hidePostForm() {
+    $('#post_link').show();
+    $('#post_form').hide();
+}

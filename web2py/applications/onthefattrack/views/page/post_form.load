@@ -9,6 +9,8 @@
         var date = new Date();
 
         updatePosts(name, slug, date, text);
+
+        hidePostForm();
     });
 </script>
 {{pass}}
