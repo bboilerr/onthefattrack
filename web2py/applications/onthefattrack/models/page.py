@@ -17,6 +17,8 @@ db.define_table(
         Field('user_id', db.auth_user, default=auth.user_id if auth.user else None,
             writable=False, readable=False, unique=True),
         Field('weight', 'double'),
+        Field('timestamp', 'datetime', default=datetime.now(),
+            writable=False, readable=False),
         Field('date', 'date', default=date.today()),
         )
 

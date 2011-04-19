@@ -5,7 +5,37 @@
 ## This scaffolding model makes your app work on Google App Engine too
 #########################################################################
 
-if request.env.web2py_runtime_gae:            # if running on Google App Engine
+# Set environment specific settings
+
+class Server:
+    DEV=1
+    DEV_GAE=2
+    GAE=3
+
+import os
+
+SERVER_TYPE = Server.DEV
+
+# Get GAE server types
+env_name = 'SERVER_SOFTWARE'
+
+if env_name in os.environ:
+    server_software = os.environ[env_name]
+
+    if server_software.startswith('Development'):
+        SERVER_TYPE = Server.DEV_GAE
+    elif server_software.startswith('Google App Engine'):
+        SERVER_TYPE = Server.GAE
+
+# Defaults for dev server
+db = DAL('sqlite://storage.sqlite')
+base_url = 'http://localhost:8080'
+mail_server = 'smtp.gmail.com:587'
+
+if SERVER_TYPE == Server.DEV_GAE:
+    base_url = 'http://localhost:8000'
+    mail_server = 'gae'
+
     db = DAL('gae')                           # connect to Google BigTable
                                               # optional DAL('gae://namespace')
     session.connect(request, response, db = db) # and store sessions and tickets there
@@ -13,10 +43,18 @@ if request.env.web2py_runtime_gae:            # if running on Google App Engine
     # from gluon.contrib.memdb import MEMDB
     # from google.appengine.api.memcache import Client
     # session.connect(request, response, db = MEMDB(Client()))
-else:                                         # else use a normal relational database
-    db = DAL('sqlite://storage.sqlite')       # if not, use SQLite or other DB
-## if no need for session
-# session.forget()
+
+elif SERVER_TYPE == Server.GAE:
+    base_url = 'http://onthefattrack.appspot.com'
+    mail_server = 'gae'
+
+    db = DAL('gae')                           # connect to Google BigTable
+                                              # optional DAL('gae://namespace')
+    session.connect(request, response, db = db) # and store sessions and tickets there
+    ### or use the following lines to store sessions in Memcache
+    # from gluon.contrib.memdb import MEMDB
+    # from google.appengine.api.memcache import Client
+    # session.connect(request, response, db = MEMDB(Client()))
 
 #########################################################################
 ## Here is sample code if you need for
@@ -36,24 +74,29 @@ crud = Crud(globals(),db)                      # for CRUD helpers using auth
 service = Service(globals())                   # for json, xml, jsonrpc, xmlrpc, amfrpc
 plugins = PluginManager()
 
-mail.settings.server = 'logging' or 'smtp.gmail.com:587'  # your SMTP server
-mail.settings.sender = 'you@gmail.com'         # your email
-mail.settings.login = 'username:password'      # your credentials or None
+# Get mail login from secret config
+login = 'username:password'
+
+try:
+    import ConfigParser
+    config = ConfigParser.RawConfigParser().read('../secret/secret.cfg')
+    login = config.read('mail', 'login')
+except:
+    pass
+
+mail.settings.server = mail_server
+mail.settings.sender = 'mail@onthefattrack.appspot.com'
+mail.settings.login = login
 
 # Janrain
 
 # Get login URL for different dev environments
-import os
-
 base_url = 'http://localhost:8080'
-env_name = 'SERVER_SOFTWARE'
-if env_name in os.environ:
-    server_software = os.environ[env_name]
 
-    if server_software.startswith('Development'):
-        base_url='http://localhost:8000'
-    elif server_software.startswith('Google App Engine'):
-        base_url='http://onthefattrack.appspot.com'
+if SERVER_TYPE == Server.DEV_GAE:
+    base_url='http://localhost:8000'
+elif SERVER_TYPE == Server.GAE:
+    base_url='http://onthefattrack.appspot.com'
 
 
 from gluon.contrib.login_methods.rpx_account import RPXAccount
