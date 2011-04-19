@@ -23,7 +23,7 @@ def index():
             response_dict['name'] = row.get_name
 
             weight_rows = db(db.weight.user_id==user_id).select()
-            weight_rows.sort(lambda row : row.date)
+            weight_rows = weight_rows.sort(lambda row : row.date)
             num_weight_rows = len(weight_rows)
             response_dict['data_length'] = num_weight_rows
 
