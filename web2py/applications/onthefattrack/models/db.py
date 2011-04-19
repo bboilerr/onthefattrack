@@ -56,6 +56,24 @@ elif SERVER_TYPE == Server.GAE:
     # from google.appengine.api.memcache import Client
     # session.connect(request, response, db = MEMDB(Client()))
 
+# Define secrets table
+# TODO: Replace with memcached?
+db.define_table(
+    'secret',
+    Field('name', length=128, default='',
+        writable=False, readable=False, unique=True),
+    Field('value', length=256, default='',
+        writable=False, readable=False, unique=True),
+    )
+
+# Get secrets
+row_list = db().select(db.secret.ALL).as_list()
+
+SECRETS = {}
+
+# Map row_list to a dictionary
+map(lambda r: SECRETS.update([[r['name'], r['value']],]), row_list)
+
 #########################################################################
 ## Here is sample code if you need for
 ## - email capabilities
@@ -74,19 +92,16 @@ crud = Crud(globals(),db)                      # for CRUD helpers using auth
 service = Service(globals())                   # for json, xml, jsonrpc, xmlrpc, amfrpc
 plugins = PluginManager()
 
-# Get mail login from secret config
-login = 'username:password'
+# Get mail login
 
-try:
-    import ConfigParser
-    config = ConfigParser.RawConfigParser().read('../secret/secret.cfg')
-    login = config.read('mail', 'login')
-except:
-    pass
+mail_login = ''
+
+if ('mail_login' in SECRETS):
+    mail_login = SECRETS['mail_login']
 
 mail.settings.server = mail_server
 mail.settings.sender = 'mail@onthefattrack.appspot.com'
-mail.settings.login = login
+mail.settings.login = mail_login
 
 from gluon.contrib.login_methods.rpx_account import RPXAccount
 auth.settings.actions_disabled=['register','change_password','request_reset_password']
