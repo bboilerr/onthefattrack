@@ -88,17 +88,6 @@ mail.settings.server = mail_server
 mail.settings.sender = 'mail@onthefattrack.appspot.com'
 mail.settings.login = login
 
-# Janrain
-
-# Get login URL for different dev environments
-base_url = 'http://localhost:8080'
-
-if SERVER_TYPE == Server.DEV_GAE:
-    base_url='http://localhost:8000'
-elif SERVER_TYPE == Server.GAE:
-    base_url='http://onthefattrack.appspot.com'
-
-
 from gluon.contrib.login_methods.rpx_account import RPXAccount
 auth.settings.actions_disabled=['register','change_password','request_reset_password']
 auth.settings.login_form = RPXAccount(request,
