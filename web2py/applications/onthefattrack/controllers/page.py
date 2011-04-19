@@ -74,6 +74,7 @@ def post_form():
 
             user = db(db.auth_user.id == auth.user_id).select().first()
             form.insert(0, INPUT(_type='text', _hidden='true', _name='name', _value=user.get_name))
+            form.insert(0, INPUT(_type='text', _hidden='true', _name='slug', _value=user.slug))
 
             response_dict['form'] = form
 

@@ -104,24 +104,26 @@ function updateGraph(id, new_weight, new_date, data, tooltips, labels) {
     }
 }
 
-function updatePosts(name, date, text) {
+function updatePosts(name, slug, date, text) {
     var post = "\
         <div class=\"post\">\
             <h4>\
-            %s\
+                <a href=\"/p/%s\">\
+                    %s\
+                </a>\
             </h4>\
             <span class=\"date\">\
-            %s\
+                %s\
             </span>\
             <p>\
-            %s\
+                %s\
             </p>\
         </div>\
         ";
 
     var date_string = sprintf('on %s at %s', date.f('dd NNN yyyy'), date.f('hh:mm a'));
 
-    post = sprintf(post, name, date_string, text);
+    post = sprintf(post, name, slug, date_string, text);
 
     $('#posts').prepend(post);
 }
