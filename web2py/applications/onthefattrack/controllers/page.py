@@ -39,13 +39,6 @@ def index():
                 response_dict['tooltips'] = json.dumps(tooltips)
                 response_dict['labels'] = json.dumps(labels)
 
-            if auth.user_id == user_id:
-                crud.messages.record_created = 'Weight Added'
-                form = crud.create(db.weight, next=URL('index/%s' % slug),
-                        message='Weight Added')
-
-                response_dict['form'] = form
-
             return response_dict
 
 def weight_form():
@@ -56,7 +49,7 @@ def weight_form():
         user_id = int(request.args[0])
 
         if (auth.user_id == user_id):
-            form = crud.create(db.weight)
+            form = crud.create(db.weight, message='Weight Added')
             response_dict['form'] = form
 
     return response_dict
@@ -69,11 +62,12 @@ def post_form():
         user_id = int(request.args[0])
 
         if (auth.user_id):
-            form = crud.create(db.post)
+            form = crud.create(db.post, message='Post Added')
             form.insert(0, INPUT(_type='text', _hidden='true', _name='page_id', _value=user_id))
 
             user = db(db.auth_user.id == auth.user_id).select().first()
             form.insert(0, INPUT(_type='text', _hidden='true', _name='name', _value=user.get_name))
+            form.insert(0, INPUT(_type='text', _hidden='true', _name='slug', _value=user.slug))
 
             response_dict['form'] = form
 
@@ -85,6 +79,7 @@ def posts():
         pass
     else:
         user_id = int(request.args[0])
+        response_dict['user_id'] = user_id
 
         posts = db(db.post.page_id==user_id).select()
         posts = posts.sort(lambda r: r.date, reverse=True)

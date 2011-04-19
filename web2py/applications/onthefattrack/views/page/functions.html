@@ -1,10 +1,13 @@
-{{def get_single_post(name, text, date):}}
+{{def get_single_post(name, slug, text, date):}}
 <div class="post">
     <h4>
-        {{=name}}
+        <a href="{{=URL('onthefattrack', 'page', 'index', args=(slug,))}}">
+            {{=name}}
+        </a>
     </h4>
     <span class="date">
-        {{=date.strftime('on %d %b %Y at %I:%M %p')}}
+        {{=date.strftime('on %d %b %Y at %I:%M %p')}} - 
+        <a href="">comment</a>
     </span>
     <p>
         {{=MARKMIN(text)}}
