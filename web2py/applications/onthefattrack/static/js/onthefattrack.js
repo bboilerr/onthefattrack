@@ -123,7 +123,7 @@ function updatePosts(name, slug, date, text) {
 
     var date_string = sprintf('on %s at %s', date.f('dd NNN yyyy'), date.f('hh:mm a'));
 
-    post = sprintf(post, name, slug, date_string, text);
+    post = sprintf(post, slug, name, date_string, text);
 
     $('#posts').prepend(post);
 }

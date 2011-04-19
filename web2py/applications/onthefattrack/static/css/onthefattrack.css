@@ -1,6 +1,16 @@
-div#posts h4
+div#posts h4 a
 {
     color: #009BBD;
+}
+
+div#posts a
+{
+    text-decoration: none;
+}
+
+div#posts a:hover
+{
+    text-decoration: underline;
 }
 
 div#posts span.date
