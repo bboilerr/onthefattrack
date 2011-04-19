@@ -18,3 +18,8 @@ div#posts span.date
     font-size: 75%;
     font-style: italic;
 }
+
+div.post
+{
+    clear: both;
+}

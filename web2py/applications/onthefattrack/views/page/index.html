@@ -9,7 +9,7 @@
 {{if len(weight_rows):
 first_row = weight_rows[0]
 weight = '%0.1f' % first_row.weight
-date = first_row.date.strftime('%d%b%y')
+date = first_row.date.strftime('%d %b %y')
 }}
 First weight was {{=weight}} {{=weight_unit}} on {{=date}}
 {{pass}}
