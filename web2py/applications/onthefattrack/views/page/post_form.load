@@ -1,19 +1,25 @@
 {{if 'form' in globals():}}
 
-{{if 'name' in request.vars and 'text' in request.vars and 'slug' in request.vars and not form.errors:}}
-<script>
-    $(document).ready(function () {
-        var name = '{{=XML(request.vars.name)}}';
-        var slug = '{{=XML(request.vars.slug)}}';
-        var text = '{{=MARKMIN(request.vars.text)}}';
-        var date = new Date();
+    {{if 'name' in request.vars and 'text' in request.vars and 'slug' in request.vars and not form.errors:}}
+        <script>
+            $(document).ready(function () {
+                var name = '{{=XML(request.vars.name)}}';
+                var slug = '{{=XML(request.vars.slug)}}';
+                var text = '{{=MARKMIN(request.vars.text)}}';
+                var date = new Date();
 
-        updatePosts(name, slug, date, text);
+                updatePosts(name, slug, date, text);
 
-        hidePostForm();
-    });
-</script>
-{{pass}}
+                hidePostForm();
+            });
+        </script>
+    {{pass}}
 
-{{=form}}
+    <div id="post_link">
+        <a href="javascript:showPostForm();">Add Post</a>
+    </div>
+    <div id="post_form" style="display:none">
+        {{=form}}
+    </div>
+
 {{pass}}

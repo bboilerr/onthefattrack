@@ -2,12 +2,7 @@
 <h1>
     Posts
 </h1>
-<div id="post_link">
-    <a href="javascript:showPostForm();">Add Post</a>
-</div>
-<div id="post_form" style="display:none">
-    {{=LOAD('page', 'post_form.load', ajax=True, args=[user_id,])}}
-</div>
+{{=LOAD('page', 'post_form.load', ajax=True, args=[user_id,])}}
 <div id="posts">
     {{if 'posts' in globals():}}
         {{for row in posts:}}
