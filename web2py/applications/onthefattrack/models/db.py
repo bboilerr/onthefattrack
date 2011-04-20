@@ -14,6 +14,12 @@ class Server:
 
 import os
 
+global SERVER_TYPE
+global BASE_URL
+global MAIL_LOGIN
+global MAIL_SERVER
+
+
 SERVER_TYPE = Server.DEV
 
 # Get GAE server types
@@ -34,8 +40,7 @@ if SERVER_TYPE == Server.DEV:
     BASE_URL = 'http://localhost:8080'
     MAIL_SERVER = 'smtp.gmail.com:587'
 
-elif SERVER_TYPE == Server.DEV_GAE:
-    BASE_URL = 'http://localhost:8000'
+elif SERVER_TYPE == Server.DEV_GAE or SERVER_TYPE == Server.GAE:
     MAIL_SERVER = 'gae'
 
     db = DAL('gae')                           # connect to Google BigTable
@@ -46,8 +51,6 @@ elif SERVER_TYPE == Server.DEV_GAE:
     # from google.appengine.api.memcache import Client
     # session.connect(request, response, db = MEMDB(Client()))
 
-elif SERVER_TYPE == Server.GAE:
-    BASE_URL = 'http://onthefattrack.appspot.com'
     MAIL_SERVER = 'gae'
 
     db = DAL('gae')                           # connect to Google BigTable
@@ -57,6 +60,15 @@ elif SERVER_TYPE == Server.GAE:
     # from gluon.contrib.memdb import MEMDB
     # from google.appengine.api.memcache import Client
     # session.connect(request, response, db = MEMDB(Client()))
+
+    host = 'http://localhost:8000'
+
+    if os.environ.get('HTTP_HOST'): 
+        host = os.environ['HTTP_HOST'] 
+    else: 
+        host = os.environ['SERVER_NAME'] 
+
+    BASE_URL = 'http://%s' % host
 
 # Define secrets table
 # TODO: Replace with memcached?
