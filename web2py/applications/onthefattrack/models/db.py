@@ -23,8 +23,10 @@ if env_name in os.environ:
     server_software = os.environ[env_name]
 
     if server_software.startswith('Development'):
+        global SERVER_TYPE
         SERVER_TYPE = Server.DEV_GAE
     elif server_software.startswith('Google App Engine'):
+        global SERVER_TYPE
         SERVER_TYPE = Server.GAE
 
 if SERVER_TYPE == Server.DEV:
@@ -100,7 +102,7 @@ if ('mail_login' in SECRETS):
     MAIL_LOGIN = SECRETS['mail_login']
 
 mail.settings.server = MAIL_SERVER
-mail.settings.sender = 'mail@onthefattrack.appspot.com (On The Fat Track)'
+mail.settings.sender = 'brent.rager@gmail.com'
 mail.settings.login = MAIL_LOGIN
 
 from gluon.contrib.login_methods.rpx_account import RPXAccount
