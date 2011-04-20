@@ -1,15 +1,33 @@
-{{def get_single_post(user, post, show_name=True):}}
+{{def get_post(post, single_post=False):}}
+
+{{
+author = post.get_author
+page_user = post.get_page_user
+}}
+
 <div class="post">
-{{if show_name:}}
+{{if single_post:}}
+    <div id="page_title">
+        <h1>
+            <a href="{{=URL('onthefattrack', 'page', 'index', args=(author.slug,))}}">
+                {{=author.get_name}}
+            </a>
+            &#9656;
+            <a href="{{=URL('onthefattrack', 'page', 'index', args=(page_user.slug,))}}">
+                {{=page_user.get_name}}
+            </a>
+        </h1>
+    </div>
+{{else:}}
     <h4>
-        <a href="{{=URL('onthefattrack', 'page', 'index', args=(user.slug,))}}">
-            {{=user.get_name}}
+        <a href="{{=URL('onthefattrack', 'page', 'index', args=(author.slug,))}}">
+            {{=author.get_name}}
         </a>
     </h4>
 {{pass}}
     <div class="info">
         <span class="date">
-            <a href="{{=URL('onthefattrack', 'page', 'singlepost', args=(user.slug,post.id))}}">{{=post.date.strftime('on %d %b %Y at %I:%M %p')}}</a> 
+            <a href="{{=URL('onthefattrack', 'page', 'post', args=(post.id))}}">{{=post.date.strftime('on %d %b %Y at %I:%M %p')}}</a> 
         </span> -
         <a class="action" href="">comment</a>
     </div>
@@ -18,3 +36,14 @@
     </p>
 </div>
 {{return}}
+
+{{def get_post_by_id(post_id, single_post=False):
+    rows = db(db.post.id==post_id).select()
+
+    if len(rows):
+        post = rows.first()
+
+        get_post(post, single_post)
+    pass
+
+    return}}

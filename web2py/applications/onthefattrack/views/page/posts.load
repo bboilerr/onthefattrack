@@ -6,7 +6,7 @@
 <div id="posts">
     {{if 'posts' in globals():}}
         {{for row in posts:}}
-            {{get_single_post(row.get_author, row)}}
+            {{get_post(row)}}
         {{pass}}
     {{pass}}
 </div>

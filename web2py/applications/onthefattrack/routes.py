@@ -22,7 +22,8 @@ default_function = 'index'      # ordinarily set in app-specific routes.py
 routes_in = (
         (r'^/?$', '/onthefattrack/default/index'),
         (r'^/?p/(?P<user_slug>[A-Za-z0-9\-]+)', '/onthefattrack/page/index/$user_slug'),
-        (r'^/?post/(?P<user_slug>[A-Za-z0-9\-]+)/(?P<post_id>[0-9]+)', '/onthefattrack/page/singlepost/$user_slug/$post_id'),
+        (r'^/?post/(?P<post_id>[0-9]+)', '/onthefattrack/page/post/$post_id'),
+        (r'^/?post/ajax/(?P<post_id>[0-9]+)', '/onthefattrack/page/ajaxpost/$post_id'),
         (r'^//.*', '/onthefattrack/default/index'),
         )
 
@@ -43,7 +44,8 @@ routes_in = (
 routes_out = (
         ('/onthefattrack/default/index', '/'),
         (r'/onthefattrack/page/index/(?P<user_slug>[A-Za-z0-9\-]+)', '/p/$user_slug'),
-        (r'/onthefattrack/page/singlepost/(?P<user_slug>[A-Za-z0-9\-]+)/(?P<post_id>[0-9]+)', '/post/$user_slug/$post_id'),
+        (r'/onthefattrack/page/post/(?P<post_id>[0-9]+)', '/post/$post_id'),
+        (r'/onthefattrack/page/ajaxpost/(?P<post_id>[0-9]+)', '/post/ajax/$post_id'),
         )
 
 # Error-handling redirects all HTTP errors (status codes >= 400) to a specified

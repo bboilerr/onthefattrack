@@ -3,12 +3,7 @@
     {{if 'name' in request.vars and 'text' in request.vars and 'slug' in request.vars and not form.errors:}}
         <script>
             $(document).ready(function () {
-                var name = '{{=XML(request.vars.name)}}';
-                var slug = '{{=XML(request.vars.slug)}}';
-                var text = '{{=MARKMIN(request.vars.text)}}';
-                var date = new Date();
-
-                updatePosts(name, slug, date, text);
+                updatePosts({{=form.vars.id}});
 
                 hidePostForm();
             });

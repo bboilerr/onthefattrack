@@ -104,28 +104,14 @@ function updateGraph(id, new_weight, new_date, data, tooltips, labels) {
     }
 }
 
-function updatePosts(name, slug, date, text) {
-    var post = "\
-        <div class=\"post\">\
-            <h4>\
-                <a href=\"/p/%s\">\
-                    %s\
-                </a>\
-            </h4>\
-            <span class=\"date\">\
-                %s\
-            </span>\
-            <p>\
-                %s\
-            </p>\
-        </div>\
-        ";
-
-    var date_string = sprintf('on %s at %s', date.f('dd NNN yyyy'), date.f('hh:mm a'));
-
-    post = sprintf(post, slug, name, date_string, text);
-
-    $('#posts').prepend(post);
+function updatePosts(post_id) {
+    var url = sprintf('/post/ajax/%d', post_id);
+    $.ajax({
+            url: url,
+            success: function(data) {
+                $('#posts').prepend(data);
+            }
+    });
 }
 
 function showPostForm() {

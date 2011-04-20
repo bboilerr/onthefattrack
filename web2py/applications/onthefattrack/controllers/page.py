@@ -65,13 +65,17 @@ def notify_post(form):
 
             email = page_user.email
 
-            message = "Hi %s\n\n%s has posted on your page: %s\n\n- On The Fat Track" % (page_user.first_name, author.get_name, URL('onthefattrack', 'page', 'singlepost', args=(page_user.slug, post_id)))
+            if email:
+                response_dict = dict()
+                response_dict['page_user'] = page_user
+                response_dict['author'] = author
+                response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
 
-            mail.send(to=[email],
-                    subject='New Post',
-                    message=message)
+                message = response.render('page/email/notify_post.html', response_dict) 
 
-
+                mail.send(to=[email],
+                        subject='New Post From %s' % (author.get_name,),
+                        message=message)
 
 def post_form():
     response_dict = dict()
@@ -106,25 +110,18 @@ def posts():
 
     return response_dict
 
-def singlepost():
-    if len(request.args) != 2:
+def post():
+    if len(request.args) != 1:
         redirect(URL('default', 'index'))
 
-    slug = request.args[0]
-
-    user_rows = db(db.auth_user.slug==slug).select()
-
-    post_id = int(request.args[1])
+    post_id = int(request.args[0])
 
     post_rows = db(db.post.id==post_id).select()
 
-    if (len(user_rows) != 1 or len(post_rows) != 1):
+    if (len(post_rows) != 1):
         redirect(URL('default', 'index'))
 
     response_dict = dict()
-
-    user = user_rows.first()
-    response_dict['user'] = user
 
     post = post_rows.first()
     response_dict['post'] = post
@@ -132,4 +129,6 @@ def singlepost():
 
     return response_dict
 
-
+# Use this to get just the post HTML for AJAX
+def ajaxpost():
+    return post()

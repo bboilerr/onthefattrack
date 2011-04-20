@@ -29,12 +29,12 @@ if env_name in os.environ:
 
 # Defaults for dev server
 db = DAL('sqlite://storage.sqlite')
-base_url = 'http://localhost:8080'
-mail_server = 'smtp.gmail.com:587'
+BASE_URL = 'http://localhost:8080'
+MAIL_SERVER = 'smtp.gmail.com:587'
 
 if SERVER_TYPE == Server.DEV_GAE:
-    base_url = 'http://localhost:8000'
-    mail_server = 'gae'
+    BASE_URL = 'http://localhost:8000'
+    MAIL_SERVER = 'gae'
 
     db = DAL('gae')                           # connect to Google BigTable
                                               # optional DAL('gae://namespace')
@@ -45,8 +45,8 @@ if SERVER_TYPE == Server.DEV_GAE:
     # session.connect(request, response, db = MEMDB(Client()))
 
 elif SERVER_TYPE == Server.GAE:
-    base_url = 'http://onthefattrack.appspot.com'
-    mail_server = 'gae'
+    BASE_URL = 'http://onthefattrack.appspot.com'
+    MAIL_SERVER = 'gae'
 
     db = DAL('gae')                           # connect to Google BigTable
                                               # optional DAL('gae://namespace')
@@ -94,21 +94,21 @@ plugins = PluginManager()
 
 # Get mail login
 
-mail_login = ''
+MAIL_LOGIN = ''
 
 if ('mail_login' in SECRETS):
-    mail_login = SECRETS['mail_login']
+    MAIL_LOGIN = SECRETS['mail_login']
 
-mail.settings.server = mail_server
-mail.settings.sender = 'mail@onthefattrack.appspot.com'
-mail.settings.login = mail_login
+mail.settings.server = MAIL_SERVER
+mail.settings.sender = 'mail@onthefattrack.appspot.com (On The Fat Track)'
+mail.settings.login = MAIL_LOGIN
 
 from gluon.contrib.login_methods.rpx_account import RPXAccount
 auth.settings.actions_disabled=['register','change_password','request_reset_password']
 auth.settings.login_form = RPXAccount(request,
     api_key='e9d4614579ac070748f11b635bc515157db893a3',
     domain='onthefattrack',
-    url = "%s/%s/default/user/login" % (base_url, request.application))
+    url = "%s/%s/default/user/login" % (BASE_URL, request.application))
 
 
 # Custom Auth Table
@@ -177,7 +177,7 @@ class AuthUserVirtualFields(object):
             return db(db.user_profile.id==user_profile_id).select().first()
 
     def get_name(self):
-        return self.auth_user.first_name + ' ' + self.auth_user.last_name
+        return ' '.join([self.auth_user.first_name, self.auth_user.last_name]).strip()
 
 
 custom_auth_table.virtualfields.append(AuthUserVirtualFields())
