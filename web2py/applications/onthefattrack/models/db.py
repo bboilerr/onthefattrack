@@ -27,12 +27,12 @@ if env_name in os.environ:
     elif server_software.startswith('Google App Engine'):
         SERVER_TYPE = Server.GAE
 
-# Defaults for dev server
-db = DAL('sqlite://storage.sqlite')
-BASE_URL = 'http://localhost:8080'
-MAIL_SERVER = 'smtp.gmail.com:587'
+if SERVER_TYPE == Server.DEV:
+    db = DAL('sqlite://storage.sqlite')
+    BASE_URL = 'http://localhost:8080'
+    MAIL_SERVER = 'smtp.gmail.com:587'
 
-if SERVER_TYPE == Server.DEV_GAE:
+elif SERVER_TYPE == Server.DEV_GAE:
     BASE_URL = 'http://localhost:8000'
     MAIL_SERVER = 'gae'
 
