@@ -112,7 +112,7 @@ if ('mail_login' in SECRETS):
     MAIL_LOGIN = SECRETS['mail_login']
 
 mail.settings.server = MAIL_SERVER
-mail.settings.sender = 'notifications@onthefattrack.com'
+mail.settings.sender = 'notifications@onthefattrack.com (On The Fat Track - Notifications)'
 mail.settings.login = MAIL_LOGIN
 
 from gluon.contrib.login_methods.rpx_account import RPXAccount
