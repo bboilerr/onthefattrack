@@ -41,12 +41,14 @@ def index():
 
 def weight_form():
     response_dict = dict()
+
     if len(request.args) == 0:
         pass
     else:
         user_id = int(request.args[0])
 
         if (auth.user_id == user_id):
+            crud.messages.submit_button='Add Weight'
             form = crud.create(db.weight, message='Weight Added')
             response_dict['form'] = form
 
@@ -85,6 +87,7 @@ def post_form():
         user_id = int(request.args[0])
 
         if (auth.user_id):
+            crud.messages.submit_button='Add Post'
             form = crud.create(db.post, message='Post Added', onaccept=lambda form: notify_post(form))
             form.insert(0, INPUT(_type='text', _hidden='true', _name='page_id', _value=user_id))
 

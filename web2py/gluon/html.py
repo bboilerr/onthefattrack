@@ -1739,7 +1739,14 @@ class FORM(DIV):
                 formkey = self.record_hash
             else:
                 formkey = web2py_uuid()
-            self.formkey = session['_formkey[%s]' % formname] = formkey
+
+            keyname = '_formkey[%s]' % formname
+
+            if not keyname in session:
+                self.formkey = session[keyname] = formkey
+            else:
+                self.formkey = session[keyname]
+
         if status and not keepvalues:
             self._traverse(False,hideerror)
         return status
