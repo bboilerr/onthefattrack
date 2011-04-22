@@ -20,7 +20,7 @@ def index():
 
     response_dict['weight_unit'] = user_unit
 
-    weight_rows = db(db.weight.user_id==user.id).select()
+    weight_rows = user.weight.select()
     weight_rows = weight_rows.sort(lambda row : row.timestamp).sort(lambda row : row.date)
     num_weight_rows = len(weight_rows)
     response_dict['data_length'] = num_weight_rows
@@ -91,13 +91,40 @@ def post_form():
             form = crud.create(db.post, message='Post Added', onaccept=lambda form: notify_post(form))
             form.insert(0, INPUT(_type='text', _hidden='true', _name='page_id', _value=user_id))
 
-            user = db(db.auth_user.id == auth.user_id).select().first()
+            user = auth.user
             form.insert(0, INPUT(_type='text', _hidden='true', _name='name', _value=user.get_name))
             form.insert(0, INPUT(_type='text', _hidden='true', _name='slug', _value=user.slug))
 
             response_dict['form'] = form
 
     return response_dict
+
+def get_post_user_dict(posts):
+    from sets import Set
+
+    user_set = Set()
+
+    for row in posts:
+        user_set.add(row.author_id)
+        user_set.add(row.page_id)
+
+    users = db(db.auth_user.id.belongs(list(user_set))).select()
+
+    user_dict = {}
+    for user in users:
+        user_dict[user.id] = user
+
+    return user_dict
+
+def get_post_comment_form_dict(posts):
+    comment_form_dict = {}
+
+    for post in posts:
+        crud.messages.submit_button='Add Comment'
+        comment_form_dict[post.id] = crud.create(db.comment, message='Comment Added')
+
+    return comment_form_dict
+
 
 def posts():
     response_dict = dict()
@@ -110,6 +137,11 @@ def posts():
         posts = db(db.post.page_id==user_id).select()
         posts = posts.sort(lambda r: r.date, reverse=True)
         response_dict['posts'] = posts
+
+        response_dict['user_dict'] = get_post_user_dict(posts)
+        response_dict['comment_form_dict'] = get_post_comment_form_dict(posts)
+
+        response_dict
 
     return response_dict
 
@@ -129,6 +161,8 @@ def post():
     post = post_rows.first()
     response_dict['post'] = post
 
+    response_dict['user_dict'] = get_post_user_dict([post])
+    response_dict['comment_form_dict'] = get_post_comment_form_dict(posts)
 
     return response_dict
 

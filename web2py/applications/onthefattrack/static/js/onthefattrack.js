@@ -117,9 +117,36 @@ function updatePosts(post_id) {
 function showPostForm() {
     $('#post_link').hide();
     $('#post_form').show();
+
+    $('#post_form').find('textarea').focus();
+
+    return false;
 }
 
 function hidePostForm() {
     $('#post_link').show();
     $('#post_form').hide();
+
+    return false;
+}
+
+function showCommentForm(event) {
+    var current = event.target
+
+    var post = $(current).closest('.post');
+
+    var comment_form = post.find('.comment_form');
+
+    comment_form.show();
+
+    comment_form.find('textarea').focus();
+
+    return false;
+}
+
+function hideCommentForm() {
+    $('#post_link').show();
+    $('#post_form').hide();
+
+    return false;
 }

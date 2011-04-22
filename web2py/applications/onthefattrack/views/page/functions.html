@@ -1,8 +1,8 @@
-{{def get_post(post, single_post=False):}}
+{{def get_post(post, user_dict, comment_form, single_post=False):}}
 
 {{
-author = post.get_author
-page_user = post.get_page_user
+author = user_dict[post.author_id]
+page_user = user_dict[post.page_id]
 }}
 
 <div class="post">
@@ -29,21 +29,14 @@ page_user = post.get_page_user
         <span class="date">
             <a href="{{=URL('onthefattrack', 'page', 'post', args=(post.id))}}">{{=post.date.strftime('on %d %b %Y at %I:%M %p')}}</a> 
         </span> -
-        <a class="action" href="">comment</a>
+        <a class="action" href="" onclick="return showCommentForm(event);">comment</a>
     </div>
     <p>
         {{=MARKMIN(post.text)}}
     </p>
+
+    <div class="comment_form" style="display:none;">
+        {{=comment_form}}
+    </div>
 </div>
 {{return}}
-
-{{def get_post_by_id(post_id, single_post=False):
-    rows = db(db.post.id==post_id).select()
-
-    if len(rows):
-        post = rows.first()
-
-        get_post(post, single_post)
-    pass
-
-    return}}
