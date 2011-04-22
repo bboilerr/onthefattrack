@@ -13,7 +13,7 @@ page_user = user_dict[post.page_id]
                 {{=author.get_name}}
             </a>
             &#9656;
-            <a href="{{=URL('onthefattrack', 'page', 'index', args=(page_user.slug,))}}">
+            <a href="{{=URL('onthefatrack', 'page', 'index', args=(page_user.slug,))}}">
                 {{=page_user.get_name}}
             </a>
         </h1>

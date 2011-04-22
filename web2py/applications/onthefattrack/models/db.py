@@ -180,13 +180,15 @@ custom_auth_table.slug.requires = [
 # Virtual Fields
 class AuthUserVirtualFields(object):
     def get_user_profile(self):
-        rows = db(db.user_profile.user_id==self.auth_user.id).select()
-        if (len(rows)):
-            return rows.first()
-        else:
-            user_profile_id = db.user_profile.insert(user_id=self.auth_user.id)
+        def lazy(self=self):
+            rows = db(db.user_profile.user_id==self.auth_user.id).select()
+            if (len(rows)):
+                return rows.first()
+            else:
+                user_profile_id = db.user_profile.insert(user_id=self.auth_user.id)
 
-            return db(db.user_profile.id==user_profile_id).select().first()
+                return db(db.user_profile.id==user_profile_id).select().first()
+        return lazy
 
     def get_name(self):
         return ' '.join([self.auth_user.first_name, self.auth_user.last_name]).strip()

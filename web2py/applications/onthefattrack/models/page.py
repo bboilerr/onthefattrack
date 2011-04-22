@@ -51,22 +51,26 @@ db.define_table(
 # Virtual Fields
 class PostVirtualFields(object):
     def get_author(self):
-        ret_val = None
+        def lazy(self=self):
+            ret_val = None
 
-        rows = db(db.auth_user.id==self.post.author_id).select()
-        if (len(rows)):
-            ret_val = rows.first()
+            rows = db(db.auth_user.id==self.post.author_id).select()
+            if (len(rows)):
+                ret_val = rows.first()
 
-        return ret_val
+            return ret_val
+        return lazy
 
     def get_page_user(self):
-        ret_val = None
+        def lazy(self=self):
+            ret_val = None
 
-        rows = db(db.auth_user.id==self.post.page_id).select()
-        if (len(rows)):
-            ret_val = rows.first()
+            rows = db(db.auth_user.id==self.post.page_id).select()
+            if (len(rows)):
+                ret_val = rows.first()
 
-        return ret_val
+            return ret_val
+        return lazy
 
 db.post.virtualfields.append(PostVirtualFields())
 

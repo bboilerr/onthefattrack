@@ -16,7 +16,7 @@ def index():
     user = rows.first()
     response_dict['user'] = user
 
-    user_unit = user.get_user_profile.weight_unit
+    user_unit = user.get_user_profile().weight_unit
 
     response_dict['weight_unit'] = user_unit
 
@@ -62,8 +62,8 @@ def notify_post(form):
         post = rows.first()
 
         if (post.author_id != post.page_id):
-            page_user = post.get_page_user
-            author = post.get_author
+            page_user = post.get_page_user()
+            author = post.get_author()
 
             email = page_user.email
 
@@ -121,10 +121,9 @@ def get_post_comment_form_dict(posts):
 
     for post in posts:
         crud.messages.submit_button='Add Comment'
-        comment_form_dict[post.id] = crud.create(db.comment, message='Comment Added')
+        comment_form_dict[post.id] = crud.create(db.comment, message='Comment Added', formname='comment_form%d' % post.id)
 
     return comment_form_dict
-
 
 def posts():
     response_dict = dict()
@@ -162,7 +161,7 @@ def post():
     response_dict['post'] = post
 
     response_dict['user_dict'] = get_post_user_dict([post])
-    response_dict['comment_form_dict'] = get_post_comment_form_dict(posts)
+    response_dict['comment_form_dict'] = get_post_comment_form_dict([post])
 
     return response_dict
 
