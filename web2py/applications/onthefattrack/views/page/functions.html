@@ -1,4 +1,4 @@
-{{def get_post(post, user_dict, comment_form, single_post=False):}}
+{{def get_post(post, user_dict, single_post=False):}}
 
 {{
 author = user_dict[post.author_id]
@@ -35,8 +35,6 @@ page_user = user_dict[post.page_id]
         {{=MARKMIN(post.text)}}
     </p>
 
-    <div class="comment_form" style="display:none;">
-        {{=comment_form}}
-    </div>
+    {{=LOAD('page', 'comment_form.load', ajax=True, args=[post.id,])}}
 </div>
 {{return}}

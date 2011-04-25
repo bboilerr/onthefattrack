@@ -79,12 +79,20 @@ db.post.author_id.requires = IS_IN_DB(db, db.auth_user.id)
 db.post.page_id.requires = IS_IN_DB(db, db.auth_user.id)
 db.post.text.requires = IS_NOT_EMPTY()
 
+def get_post_id():
+    ret_val = None
+
+    if 'post_id' in request.post_vars:
+        ret_val = int(request.post_vars.post_id)
+
+    return ret_val
+
 # Comment Table
 db.define_table(
         'comment',
         Field('author_id', db.auth_user, default=auth.user_id if auth.user else None,
             writable=False, readable=False),
-        Field('post_id', db.post,
+        Field('post_id', db.post, default=get_post_id,
             writable=False, readable=False),
         Field('date', 'datetime', default=datetime.now(),
             writable=False, readable=False),
@@ -92,3 +100,30 @@ db.define_table(
         )
 
 db.comment.author_id.requires = IS_IN_DB(db, db.auth_user.id)
+db.comment.post_id.requires = IS_IN_DB(db, db.post.id)
+db.comment.text.requres = IS_NOT_EMPTY()
+
+class CommentVirtualFields(object):
+    def get_author(self):
+        def lazy(self=self):
+            ret_val = None
+
+            rows = db(db.auth_user.id==self.comment.author_id).select()
+            if (len(rows)):
+                ret_val = rows.first()
+
+            return ret_val
+        return lazy
+
+    def get_post(self):
+        def lazy(self=self):
+            ret_val = None
+
+            rows = db(db.post.id==self.comment.post_id).select()
+            if (len(rows)):
+                ret_val = rows.first()
+
+            return ret_val
+        return lazy
+
+db.comment.virtualfields.append(CommentVirtualFields())

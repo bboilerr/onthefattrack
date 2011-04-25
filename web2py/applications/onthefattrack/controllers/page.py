@@ -91,10 +91,6 @@ def post_form():
             form = crud.create(db.post, message='Post Added', onaccept=lambda form: notify_post(form))
             form.insert(0, INPUT(_type='text', _hidden='true', _name='page_id', _value=user_id))
 
-            user = auth.user
-            form.insert(0, INPUT(_type='text', _hidden='true', _name='name', _value=user.get_name))
-            form.insert(0, INPUT(_type='text', _hidden='true', _name='slug', _value=user.slug))
-
             response_dict['form'] = form
 
     return response_dict
@@ -116,15 +112,6 @@ def get_post_user_dict(posts):
 
     return user_dict
 
-def get_post_comment_form_dict(posts):
-    comment_form_dict = {}
-
-    for post in posts:
-        crud.messages.submit_button='Add Comment'
-        comment_form_dict[post.id] = crud.create(db.comment, message='Comment Added', formname='comment_form%d' % post.id)
-
-    return comment_form_dict
-
 def posts():
     response_dict = dict()
     if len(request.args) == 0:
@@ -138,7 +125,6 @@ def posts():
         response_dict['posts'] = posts
 
         response_dict['user_dict'] = get_post_user_dict(posts)
-        response_dict['comment_form_dict'] = get_post_comment_form_dict(posts)
 
         response_dict
 
@@ -161,10 +147,70 @@ def post():
     response_dict['post'] = post
 
     response_dict['user_dict'] = get_post_user_dict([post])
-    response_dict['comment_form_dict'] = get_post_comment_form_dict([post])
 
     return response_dict
 
 # Use this to get just the post HTML for AJAX
 def ajaxpost():
     return post()
+
+def notify_comment(form):
+    comment_id = form.vars.id
+    rows = db(db.comment.id==comment_id).select()
+
+    if len(rows):
+        comment = rows.first()
+
+        author = comment.get_author()
+        post = comment.get_post()
+        post_page_user = post.get_page_user()
+        post_author = post.get_author()
+
+        if (author.id != post_author.id):
+            email = post_author.email
+
+            if email:
+                response_dict = dict()
+                response_dict['notify_user'] = post_author
+                response_dict['author'] = author
+                response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
+                response_dict['page_or_post'] = 'your post'
+
+                message = response.render('page/email/notify_comment.html', response_dict) 
+
+                mail.send(to=[email],
+                        subject='New comment From %s' % (author.get_name,),
+                        message=message)
+
+        if (author.id != post_page_user.id and post_author.id != post_page_user.id):
+            email = post_page_user.email
+
+            if email:
+                response_dict = dict()
+                response_dict['notify_user'] = post_page_user
+                response_dict['author'] = author
+                response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
+                response_dict['page_or_post'] = 'a post on your page'
+
+                message = response.render('page/email/notify_comment.html', response_dict) 
+
+                mail.send(to=[email],
+                        subject='New comment From %s' % (author.get_name,),
+                        message=message)
+
+def comment_form():
+    response_dict = dict()
+    if len(request.args) == 0:
+        pass
+    else:
+        post_id = int(request.args[0])
+
+        if (auth.user_id):
+            crud.messages.submit_button='Add Comment'
+            form = crud.create(db.comment, message='Comment Added', onaccept=lambda form: notify_comment(form))
+            form.insert(0, INPUT(_type='text', _hidden='true', _name='post_id', _value=post_id))
+
+            response_dict['form'] = form
+
+    return response_dict
+

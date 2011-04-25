@@ -5,18 +5,16 @@
     {{if util.contains_all(request.vars, ('text',)):}}
         <script>
             $(document).ready(function () {
-                updatePosts({{=form.vars.id}});
+//                updatePosts({{=form.vars.id}});
 
-                hidePostForm();
+ //               hidePostForm();
             });
         </script>
     {{pass}}
 
-    <div id="post_link">
-        <a class="action" href="javascript:showPostForm();">Add Post</a>
-    </div>
-    <div id="post_form" style="display:none">
+    <div class="comment_form" style="display:none;">
         {{=form}}
     </div>
 
 {{pass}}
+
