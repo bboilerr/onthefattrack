@@ -31,3 +31,17 @@ div.post div.info
     font-size: 85%;
     font-style: italic;
 }
+
+div.comments
+{
+    margin-left: 60px;
+}
+
+div.comment
+{
+    background-color: #EBFBFF;
+    border-left: 4px solid #444;
+    padding: 10px;
+    margin-bottom: 10px;
+    clear: both;
+}

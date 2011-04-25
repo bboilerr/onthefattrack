@@ -1,4 +1,4 @@
-{{def get_post(post, user_dict, single_post=False):}}
+{{def get_post(post, user_dict, comments, single_post=False):}}
 
 {{
 author = user_dict[post.author_id]
@@ -36,5 +36,33 @@ page_user = user_dict[post.page_id]
     </p>
 
     {{=LOAD('page', 'comment_form.load', ajax=True, args=[post.id,])}}
+
+    <div class="comments">
+        {{for comment in comments:}}
+            {{get_comment(comment, user_dict)}} 
+        {{pass}}
+    </div>
+</div>
+{{return}}
+
+{{def get_comment(comment, user_dict):}}
+
+{{
+author = user_dict[comment.author_id]
+}}
+<div class="comment">
+    <h4>
+        <a href="{{=URL('onthefattrack', 'page', 'index', args=(author.slug,))}}">
+            {{=author.get_name}}
+        </a>
+    </h4>
+    <div class="info">
+        <span class="date">
+            {{=comment.date.strftime('on %d %b %Y at %I:%M %p')}}
+        </span>
+    </div>
+    <p>
+        {{=MARKMIN(comment.text)}}
+    </p>
 </div>
 {{return}}

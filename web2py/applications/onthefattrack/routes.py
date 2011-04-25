@@ -24,6 +24,7 @@ routes_in = (
         (r'^/?p/(?P<user_slug>[A-Za-z0-9\-]+)', '/onthefattrack/page/index/$user_slug'),
         (r'^/?post/(?P<post_id>[0-9]+)', '/onthefattrack/page/post/$post_id'),
         (r'^/?post/ajax/(?P<post_id>[0-9]+)', '/onthefattrack/page/ajaxpost/$post_id'),
+        (r'^/?comment/ajax/(?P<comment_id>[0-9]+)', '/onthefattrack/page/ajaxcomment/$post_id'),
         (r'^//.*', '/onthefattrack/default/index'),
         )
 
@@ -46,6 +47,7 @@ routes_out = (
         (r'/onthefattrack/page/index/(?P<user_slug>[A-Za-z0-9\-]+)', '/p/$user_slug'),
         (r'/onthefattrack/page/post/(?P<post_id>[0-9]+)', '/post/$post_id'),
         (r'/onthefattrack/page/ajaxpost/(?P<post_id>[0-9]+)', '/post/ajax/$post_id'),
+        (r'/onthefattrack/page/ajaxcomment/(?P<comment_id>[0-9]+)', '/comment/ajax/$comment_id'),
         )
 
 # Error-handling redirects all HTTP errors (status codes >= 400) to a specified

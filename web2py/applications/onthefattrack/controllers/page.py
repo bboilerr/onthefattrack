@@ -112,6 +112,22 @@ def get_post_user_dict(posts):
 
     return user_dict
 
+def get_post_comment_dict(posts):
+    comment_dict = {}
+
+    post_ids = [post.id for post in posts]
+
+    comments = db(db.comment.post_id.belongs(post_ids)).select().sort(lambda c: c.date, reverse=True)
+
+    for post in posts:
+        comment_dict[post.id] = []
+
+    for comment in comments:
+        comment_dict[comment.post_id].append(comment)
+
+    return comment_dict
+
+
 def posts():
     response_dict = dict()
     if len(request.args) == 0:
@@ -125,6 +141,7 @@ def posts():
         response_dict['posts'] = posts
 
         response_dict['user_dict'] = get_post_user_dict(posts)
+        response_dict['comment_dict'] = get_post_comment_dict(posts)
 
         response_dict
 
@@ -147,6 +164,7 @@ def post():
     response_dict['post'] = post
 
     response_dict['user_dict'] = get_post_user_dict([post])
+    response_dict['comment_dict'] = get_post_comment_dict([post])
 
     return response_dict
 
@@ -214,3 +232,22 @@ def comment_form():
 
     return response_dict
 
+def ajaxcomment():
+    if len(request.args) != 1:
+        redirect(URL('default', 'index'))
+
+    comment_id = int(request.args[0])
+
+    comment_rows = db(db.comment.id==comment_id).select()
+
+    if (len(comment_rows) != 1):
+        redirect(URL('default', 'index'))
+
+    response_dict = dict()
+
+    comment = comment_rows.first()
+    response_dict['comment'] = comment
+
+    response_dict['user_dict'] = get_comment_user_dict([comment])
+
+    return response_dict

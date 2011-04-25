@@ -7,7 +7,7 @@
 <div id="posts">
     {{if 'posts' in globals():}}
         {{for row in posts:}}
-            {{get_post(row, user_dict)}}
+            {{get_post(row, user_dict, comment_dict[row.id])}}
         {{pass}}
     {{pass}}
 </div>
