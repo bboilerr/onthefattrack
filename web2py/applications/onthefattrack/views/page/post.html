@@ -2,4 +2,4 @@
 {{extend 'layout.html'}}
 {{include 'page/functions.html'}}
 
-{{get_post(post, user_dict, comment_dict[post.id], True)}}
+{{get_post(post, user_dict, comment_dict[post.id], comment_dict['user_dict'], True, logged_in)}}

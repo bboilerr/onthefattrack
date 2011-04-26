@@ -117,7 +117,9 @@ def get_post_comment_dict(posts):
 
     post_ids = [post.id for post in posts]
 
-    comments = db(db.comment.post_id.belongs(post_ids)).select().sort(lambda c: c.date, reverse=True)
+    comments = db(db.comment.post_id.belongs(post_ids)).select().sort(lambda c: c.date)
+
+    comment_dict['user_dict'] = get_comment_user_dict(comments)
 
     for post in posts:
         comment_dict[post.id] = []
@@ -126,6 +128,19 @@ def get_post_comment_dict(posts):
         comment_dict[comment.post_id].append(comment)
 
     return comment_dict
+
+def get_comment_user_dict(comments):
+    from sets import Set
+
+    user_set = Set([comment.author_id for comment in comments])
+
+    users = db(db.auth_user.id.belongs(list(user_set))).select()
+
+    user_dict = {}
+    for user in users:
+        user_dict[user.id] = user
+
+    return user_dict
 
 
 def posts():
@@ -140,6 +155,7 @@ def posts():
         posts = posts.sort(lambda r: r.date, reverse=True)
         response_dict['posts'] = posts
 
+        response_dict['logged_in'] = bool(auth.user_id)
         response_dict['user_dict'] = get_post_user_dict(posts)
         response_dict['comment_dict'] = get_post_comment_dict(posts)
 
@@ -163,6 +179,7 @@ def post():
     post = post_rows.first()
     response_dict['post'] = post
 
+    response_dict['logged_in'] = bool(auth.user_id)
     response_dict['user_dict'] = get_post_user_dict([post])
     response_dict['comment_dict'] = get_post_comment_dict([post])
 

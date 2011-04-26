@@ -24,7 +24,7 @@ routes_in = (
         (r'^/?p/(?P<user_slug>[A-Za-z0-9\-]+)', '/onthefattrack/page/index/$user_slug'),
         (r'^/?post/(?P<post_id>[0-9]+)', '/onthefattrack/page/post/$post_id'),
         (r'^/?post/ajax/(?P<post_id>[0-9]+)', '/onthefattrack/page/ajaxpost/$post_id'),
-        (r'^/?comment/ajax/(?P<comment_id>[0-9]+)', '/onthefattrack/page/ajaxcomment/$post_id'),
+        (r'^/?comment/ajax/(?P<comment_id>[0-9]+)', '/onthefattrack/page/ajaxcomment/$comment_id'),
         (r'^//.*', '/onthefattrack/default/index'),
         )
 

@@ -1,8 +1,7 @@
 {{if 'form' in globals():}}
 
-    {{from applications.onthefattrack.modules import util}}
 
-    {{if util.contains_all(request.vars, ('text',)):}}
+    {{if 'text' in request.vars:}}
         <script>
             $(document).ready(function () {
                 updatePosts({{=form.vars.id}});

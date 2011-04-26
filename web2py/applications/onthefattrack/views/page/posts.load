@@ -3,11 +3,13 @@
 <h1>
     Posts
 </h1>
-{{=LOAD('page', 'post_form.load', ajax=True, args=[user_id,])}}
+{{if logged_in:}}
+    {{=LOAD('page', 'post_form.load', ajax=True, args=[user_id,])}}
+{{pass}}
 <div id="posts">
     {{if 'posts' in globals():}}
         {{for row in posts:}}
-            {{get_post(row, user_dict, comment_dict[row.id])}}
+            {{get_post(row, user_dict, comment_dict[row.id], comment_dict['user_dict'], logged_in=logged_in)}}
         {{pass}}
     {{pass}}
 </div>

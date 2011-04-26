@@ -150,3 +150,14 @@ function hideCommentForm() {
 
     return false;
 }
+
+function updateComments(comments_div, comment_id) {
+    var url = sprintf('/comment/ajax/%d', comment_id);
+    $.ajax({
+            url: url,
+            success: function(data) {
+                comments_div.append(data);
+            }
+    });
+}
+

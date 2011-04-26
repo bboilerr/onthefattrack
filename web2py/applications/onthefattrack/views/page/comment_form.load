@@ -1,15 +1,16 @@
 {{if 'form' in globals():}}
 
-    {{from applications.onthefattrack.modules import util}}
+    {{if 'text' in request.vars:}}
+        <div class="comment_{{=form.vars.id}}"></div>
 
-    {{if util.contains_all(request.vars, ('text',)):}}
         <script>
             $(document).ready(function () {
-//                updatePosts({{=form.vars.id}});
+                comments_div = $('.comment_{{=form.vars.id}}').closest('.post').find('.comments');
 
- //               hidePostForm();
+                updateComments(comments_div, {{=form.vars.id}});
             });
         </script>
+
     {{pass}}
 
     <div class="comment_form" style="display:none;">
