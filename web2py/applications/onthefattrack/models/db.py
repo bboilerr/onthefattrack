@@ -138,9 +138,13 @@ def create_user_slug(row):
     original_slug = slug
 
     count = 2
-    while len(db(db.auth_user.slug==slug).select()):
+    existing_users = db(db.auth_user.slug==slug).select()
+    while len(existing_users):
+        if existing_users.first().email == row.email:
+            break
         slug = original_slug + str(count)
         count += 1
+        existing_users = db(db.auth_user.slug==slug).select()
 
     return slug
 
@@ -153,7 +157,7 @@ db.define_table(
     Field('last_name', length=128, default=''),
     Field('email', length=128, default='', unique=True),
     Field('password', 'password', length=512,
-          readable=False, label='Password'),
+          writable=False, readable=False, label='Password'),
     Field('registration_key', length=512,
           writable=False, readable=False, default=''),
     Field('reset_password_key', length=512,
@@ -213,6 +217,8 @@ auth.settings.registration_requires_approval = False
 auth.messages.verify_email = 'Click on the link http://'+request.env.http_host+URL('default','user',args=['verify_email'])+'/%(key)s to verify your email'
 auth.settings.reset_password_requires_verification = True
 auth.messages.reset_password = 'Click on the link http://'+request.env.http_host+URL('default','user',args=['reset_password'])+'/%(key)s to reset your password'
+
+auth.user = auth.settings.table_user[auth.user_id]
 
 #########################################################################
 ## If you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.

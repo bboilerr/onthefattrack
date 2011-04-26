@@ -2,14 +2,14 @@ from gluon.contrib import simplejson as json
 
 def index():
     if len(request.args) != 1:
-        redirect(URL('default', 'index'))
+        raise HTTP(404)
 
     slug = request.args[0]
 
     rows = db(db.auth_user.slug==slug).select()
 
     if (len(rows) != 1):
-        redirect(URL('default', 'index'))
+        raise HTTP(404)
 
     response_dict = dict()
 
@@ -43,7 +43,7 @@ def weight_form():
     response_dict = dict()
 
     if len(request.args) == 0:
-        pass
+        redirect(URL('onthefattrack', 'default', 'blank'))
     else:
         user_id = int(request.args[0])
 
@@ -51,6 +51,8 @@ def weight_form():
             crud.messages.submit_button='Add Weight'
             form = crud.create(db.weight, message='Weight Added')
             response_dict['form'] = form
+        else:
+            redirect(URL('onthefattrack', 'default', 'blank'))
 
     return response_dict
 
@@ -85,11 +87,13 @@ def notify_post(form):
 def post_form():
     response_dict = dict()
     if len(request.args) == 0:
-        pass
+        redirect(URL('onthefattrack', 'default', 'blank'))
     else:
         user_id = int(request.args[0])
 
-        if (auth.user_id):
+        if not auth.user_id:
+            redirect(URL('onthefattrack', 'default', 'blank'))
+        else:
             crud.messages.submit_button='Add Post'
             form = crud.create(db.post, message='Post Added', onaccept=lambda form: notify_post(form))
             form.insert(0, INPUT(_type='text', _hidden='true', _name='page_id', _value=user_id))
@@ -168,14 +172,14 @@ def posts():
 
 def post():
     if len(request.args) != 1:
-        redirect(URL('default', 'index'))
+        raise HTTP(404)
 
     post_id = int(request.args[0])
 
     post_rows = db(db.post.id==post_id).select()
 
     if (len(post_rows) != 1):
-        redirect(URL('default', 'index'))
+        raise HTTP(404)
 
     response_dict = dict()
 
@@ -239,11 +243,13 @@ def notify_comment(form):
 def comment_form():
     response_dict = dict()
     if len(request.args) == 0:
-        pass
+        redirect(URL('onthefattrack', 'default', 'blank'))
     else:
         post_id = int(request.args[0])
 
-        if (auth.user_id):
+        if not auth.user_id:
+            redirect(URL('onthefattrack', 'default', 'blank'))
+        else:
             crud.messages.submit_button='Add Comment'
             form = crud.create(db.comment, message='Comment Added', onaccept=lambda form: notify_comment(form))
             form.insert(0, INPUT(_type='text', _hidden='true', _name='post_id', _value=post_id))
@@ -254,14 +260,14 @@ def comment_form():
 
 def ajaxcomment():
     if len(request.args) != 1:
-        redirect(URL('default', 'index'))
+        redirect(URL('onthefattrack', 'default', 'blank'))
 
     comment_id = int(request.args[0])
 
     comment_rows = db(db.comment.id==comment_id).select()
 
     if (len(comment_rows) != 1):
-        redirect(URL('default', 'index'))
+        redirect(URL('onthefattrack', 'default', 'blank'))
 
     response_dict = dict()
 

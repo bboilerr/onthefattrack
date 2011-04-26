@@ -55,3 +55,45 @@ def call():
     """
     session.forget()
     return service()
+
+def blank():
+    return dict()
+
+@auth.requires_login()
+def profile():
+    """
+    override auth profile
+    """
+    response_dict = dict()
+    response_dict['user'] = auth.user
+
+    return response_dict
+
+def user_form():
+    response_dict = dict()
+
+    if not auth.user_id:
+        redirect(URL('onthefattrack', 'default', 'blank'))
+    else:
+        crud.messages.submit_button='Save User'
+        auth_user_form = crud.update(db.auth_user, auth.user_id, message='User Saved', deletable=False)
+
+        auth.user = db(db.auth_user.id == auth.user_id).select().first()
+
+        response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'index', args=(auth.user.slug,)))
+        response_dict['auth_user_form'] = auth_user_form
+
+    return response_dict
+
+def profile_form():
+    response_dict = dict()
+
+    if not auth.user_id:
+        redirect(URL('onthefattrack', 'default', 'blank'))
+    else:
+        crud.messages.submit_button='Save User Profile'
+        user_profile_form = crud.update(db.user_profile, auth.user.get_user_profile().id, message='User Profile Saved', deletable=False)
+
+        response_dict['user_profile_form'] = user_profile_form
+
+    return response_dict

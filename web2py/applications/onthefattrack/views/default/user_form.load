@@ -1,0 +1,2 @@
+<p>Your page can be found here: <a href="{{=url}}">{{=url}}</a></p>
+{{=auth_user_form}}
