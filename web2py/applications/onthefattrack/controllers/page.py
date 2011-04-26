@@ -72,6 +72,7 @@ def notify_post(form):
                 response_dict['page_user'] = page_user
                 response_dict['author'] = author
                 response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
+                response_dict['post'] = post
 
                 message = response.render('page/email/notify_post.html', response_dict) 
 
@@ -210,6 +211,7 @@ def notify_comment(form):
                 response_dict['author'] = author
                 response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
                 response_dict['page_or_post'] = 'your post'
+                response_dict['comment'] = comment
 
                 message = response.render('page/email/notify_comment.html', response_dict) 
 
