@@ -86,6 +86,8 @@ function getGraph(id, data, tooltips, labels) {
     line.Set('chart.shadow', true);
 
     line.Draw();
+
+    return false;
 }
 
 function updateGraph(id, new_weight, new_date, data, tooltips, labels) {
@@ -102,6 +104,8 @@ function updateGraph(id, new_weight, new_date, data, tooltips, labels) {
         RGraph.Clear(document.getElementById('myLine'));
         getGraph('myLine', g_data, g_tooltips, g_labels);
     }
+
+    return false;
 }
 
 function updatePosts(post_id) {
@@ -112,6 +116,8 @@ function updatePosts(post_id) {
                 $('#posts').prepend(data);
             }
     });
+
+    return false;
 }
 
 function showPostForm() {
@@ -159,5 +165,7 @@ function updateComments(comments_div, comment_id) {
                 comments_div.append(data);
             }
     });
+
+    return false;
 }
 
