@@ -29,6 +29,15 @@ if (!Array.prototype.map)
 // Add array clone
 Array.prototype.clone = function() { return this.slice(0); }
 
+Array.prototype.max = function() {
+  return Math.max.apply(null, this)
+}
+
+Array.prototype.min = function() {
+  return Math.min.apply(null, this)
+}
+
+
 function getGraph(id, data, tooltips, labels) {
     var change_labels = labels.map(function(val) { return '' });
     var label_length = labels.length;
@@ -84,6 +93,14 @@ function getGraph(id, data, tooltips, labels) {
     line.Set('chart.title.xaxis', 'Date');
     line.Set('chart.title.yaxis', sprintf('Weight (%s)', g_weight_unit));
     line.Set('chart.shadow', true);
+
+    var min_weight = data.min();
+    min_weight -= 30;
+
+    if (min_weight < 0) { min_weight = 0; }
+
+    line.Set('chart.ymin', min_weight);
+    line.Set('chart.text.size', 8);
 
     line.Draw();
 
