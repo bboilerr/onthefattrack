@@ -1,6 +1,9 @@
 {{left_sidebar_enabled=right_sidebar_enabled=False}}
 {{extend 'layout.html'}}
 
+{{=BEAUTIFY(request.get_vars)}}
+{{=BEAUTIFY(request.vars)}}
+
 {{if not auth.user and not request.function=='user':}}
 {{=auth.login(next=URL(r=request,args=request.args))}}
 {{pass}}

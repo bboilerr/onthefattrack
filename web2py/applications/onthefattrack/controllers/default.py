@@ -16,6 +16,8 @@ def index():
     """
     if (auth.user_id):
         redirect(URL('onthefattrack', 'page', 'index', args=(auth.user.slug,)))
+    else:
+        redirect(URL('onthefattrack', 'default', 'user', args=('login',)))
 
     return dict()
 

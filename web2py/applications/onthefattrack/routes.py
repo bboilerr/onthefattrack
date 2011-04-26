@@ -21,6 +21,8 @@ default_function = 'index'      # ordinarily set in app-specific routes.py
 
 routes_in = (
         (r'^/?$', '/onthefattrack/default/index'),
+        (r'^/?user/?', '/onthefattrack/default/user'),
+        (r'^/?user/(?P<user_url>.+)', '/onthefattrack/default/user/$user_url'),
         (r'^/?p/(?P<user_slug>[A-Za-z0-9\-]+)', '/onthefattrack/page/index/$user_slug'),
         (r'^/?post/(?P<post_id>[0-9]+)', '/onthefattrack/page/post/$post_id'),
         (r'^/?post/ajax/(?P<post_id>[0-9]+)', '/onthefattrack/page/ajaxpost/$post_id'),
@@ -44,6 +46,8 @@ routes_in = (
 
 routes_out = (
         ('/onthefattrack/default/index', '/'),
+        (r'/onthefattrack/default/user/?', '/user'),
+        (r'/onthefattrack/default/user/(?P<user_url>.+)', '/user/$user_url'),
         (r'/onthefattrack/page/index/(?P<user_slug>[A-Za-z0-9\-]+)', '/p/$user_slug'),
         (r'/onthefattrack/page/post/(?P<post_id>[0-9]+)', '/post/$post_id'),
         (r'/onthefattrack/page/ajaxpost/(?P<post_id>[0-9]+)', '/post/ajax/$post_id'),

@@ -73,12 +73,14 @@ def notify_post(form):
                 response_dict['author'] = author
                 response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
                 response_dict['post'] = post
+                subject = response_dict['subject'] = 'New Post From %s' % (author.get_name,)
 
-                message = response.render('page/email/notify_post.html', response_dict) 
+                message_html = response.render('page/email/notify_post.html', response_dict) 
+                message_txt = response.render('page/email/notify_post.txt', response_dict) 
 
                 mail.send(to=[email],
-                        subject='New Post From %s' % (author.get_name,),
-                        message=message)
+                        subject=subject,
+                        message=(message_txt, message_html))
 
 def post_form():
     response_dict = dict()
@@ -197,43 +199,42 @@ def notify_comment(form):
     if len(rows):
         comment = rows.first()
 
+        author_id = comment.author_id
         author = comment.get_author()
         post = comment.get_post()
-        post_page_user = post.get_page_user()
-        post_author = post.get_author()
 
-        if (author.id != post_author.id):
-            email = post_author.email
+        # Get post author and page user
+        from sets import Set
+        user_ids_to_notify_set = Set([post.author_id, post.page_id])
 
-            if email:
-                response_dict = dict()
-                response_dict['notify_user'] = post_author
-                response_dict['author'] = author
-                response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
-                response_dict['page_or_post'] = 'your post'
-                response_dict['comment'] = comment
+        post_comments = post.comment.select()
 
-                message = response.render('page/email/notify_comment.html', response_dict) 
+        # Get authors for all post comments
+        user_ids_to_notify_set.update([post_comment.author_id for post_comment in post_comments])
 
-                mail.send(to=[email],
-                        subject='New comment From %s' % (author.get_name,),
-                        message=message)
+        # If those authors are not the author of this new comment, notify them
+        user_ids_to_notify = filter(lambda user_id: user_id != author_id, list(user_ids_to_notify_set))
 
-        if (author.id != post_page_user.id and post_author.id != post_page_user.id):
-            email = post_page_user.email
+        if user_ids_to_notify:
+            users_to_notify = db(db.auth_user.id.belongs(user_ids_to_notify)).select()
 
-            if email:
-                response_dict = dict()
-                response_dict['notify_user'] = post_page_user
-                response_dict['author'] = author
-                response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
-                response_dict['page_or_post'] = 'a post on your page'
+            for user in users_to_notify:
+                email = user.email
 
-                message = response.render('page/email/notify_comment.html', response_dict) 
+                if email:
+                    response_dict = dict()
+                    response_dict['notify_user'] = user
+                    response_dict['author'] = author
+                    response_dict['url'] = '%s%s' % (BASE_URL, URL('onthefattrack', 'page', 'post', args=(post.id,)))
+                    response_dict['comment'] = comment
+                    subject = response_dict['subject'] = 'New comment From %s' % (author.get_name,)
 
-                mail.send(to=[email],
-                        subject='New comment From %s' % (author.get_name,),
-                        message=message)
+                    message_html = response.render('page/email/notify_comment.html', response_dict) 
+                    message_txt = response.render('page/email/notify_comment.txt', response_dict) 
+
+                    mail.send(to=[email],
+                            subject=subject,
+                            message=(message_txt, message_html))
 
 def comment_form():
     response_dict = dict()

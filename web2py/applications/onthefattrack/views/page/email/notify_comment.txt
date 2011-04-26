@@ -1,0 +1,11 @@
+Hello {{=notify_user.get_name}},
+
+{{=author.get_name}} has posted a comment on a post you're involved in.  You can view it at the following link:
+
+{{=url}}
+
+Thanks,
+
+On The Fat Track
+
+

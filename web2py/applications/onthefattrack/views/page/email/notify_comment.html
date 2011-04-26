@@ -1,14 +1,27 @@
-Hello {{=notify_user.get_name}},
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://ww=
+w.w3.org/TR/html4/loose.dtd"><html><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-885=9-1">
+<title>{{=subject}}</title>
+</head>
+<body>
 
-{{=author.get_name}} has posted a comment on {{=page_or_post}}.  You can view it at the following link:
+    <p>Hello {{=notify_user.get_name}},</p>
 
-{{=url}}
+    <p>{{=author.get_name}} has posted a comment on a post you're involved in.  You can view it at the following link:</p>
 
-Comment text:
+    <p>{{=url}}</p>
 
-{{=comment.text}}
+    <p>Comment text:</p>
+    <hr />
 
-Thanks,
+    <p>{{=MARKMIN(comment.text)}}</p>
 
-On The Fat Track
+    <hr style="clear:both;" />
+
+    <p>Thanks,</p>
+
+    <p>On The Fat Track</p>
+
+</body>
+</html>
 

@@ -112,16 +112,21 @@ if ('mail_login' in SECRETS):
     MAIL_LOGIN = SECRETS['mail_login']
 
 mail.settings.server = MAIL_SERVER
-mail.settings.sender = 'notifications@onthefattrack.com (On The Fat Track - Notifications)'
+mail.settings.sender = 'On The Fat Track - Notifications <notifications@onthefattrack.com>'
 mail.settings.login = MAIL_LOGIN
+
+next_url = ''
+if '_next' in request.get_vars:
+    next_url = '?_next=%s' % (request.get_vars['_next'],)
+
+rpx_url = "%s/%s/default/user/login%s" % (BASE_URL, request.application, next_url)
 
 from gluon.contrib.login_methods.rpx_account import RPXAccount
 auth.settings.actions_disabled=['register','change_password','request_reset_password']
 auth.settings.login_form = RPXAccount(request,
     api_key='e9d4614579ac070748f11b635bc515157db893a3',
     domain='onthefattrack',
-    url = "%s/%s/default/user/login" % (BASE_URL, request.application))
-
+    url = rpx_url)
 
 # Custom Auth Table
 
@@ -158,15 +163,15 @@ db.define_table(
 
     # Custom fields here
     Field('slug', length=512, compute=create_user_slug,
-        writable=False, readable=False, unique=True),
+        unique=True),
     )
 
 # Required field requirements
 custom_auth_table = db[auth.settings.table_user_name] # get the custom_auth_table
 custom_auth_table.first_name.requires = \
         IS_NOT_EMPTY(error_message=auth.messages.is_empty)
-custom_auth_table.last_name.requires = \
-        IS_NOT_EMPTY(error_message=auth.messages.is_empty)
+# custom_auth_table.last_name.requires = \
+#         IS_NOT_EMPTY(error_message=auth.messages.is_empty)
 custom_auth_table.password.requires = [IS_STRONG(special=0), CRYPT()]
 custom_auth_table.email.requires = [
         IS_EMAIL(error_message=auth.messages.invalid_email),

@@ -872,7 +872,12 @@ class Auth(object):
 
         # ## these should be functions or lambdas
 
-        self.settings.login_next = self.url('index')
+        login_next = self.url('index')
+
+        if '_next' in request.get_vars:
+            login_next = request.get_vars['_next']
+
+        self.settings.login_next = login_next
         self.settings.login_onvalidation = []
         self.settings.login_onaccept = []
         self.settings.login_methods = [self]
@@ -880,7 +885,7 @@ class Auth(object):
         self.settings.login_email_validate = True
         self.settings.login_userfield = None
 
-        self.settings.logout_next = self.url('index')
+        self.settings.logout_next = login_next
         self.settings.logout_onlogout = None
 
         self.settings.register_next = self.url('index')
@@ -891,7 +896,7 @@ class Auth(object):
         self.settings.verify_email_next = self.url('user', args='login')
         self.settings.verify_email_onaccept = []
 
-        self.settings.profile_next = self.url('index')
+        self.settings.profile_next = login_next
         self.settings.profile_onvalidation = []
         self.settings.profile_onaccept = []
         self.settings.profile_fields = None
@@ -1068,19 +1073,22 @@ class Auth(object):
             action=URL(request.application,request.controller,'user')
         if prefix:
             prefix = prefix.strip()+' '
+        next = '?_next=%s' % URL(r=request, args=request.args)
         if self.user_id:
-            logout=A(T('logout'),_href=action+'/logout')
-            profile=A(T('profile'),_href=action+'/profile')
+            user_name = ' '.join([self.user.first_name, self.user.last_name]).strip()
+            user_page=A(user_name,_href=URL('onthefattrack', 'page', 'index', args=(self.user.slug,)))
+            logout=A(T('logout'),_href=action+'/logout'+next)
+            profile=A(T('profile'),_href=action+'/profile'+next)
             password=A(T('password'),_href=action+'/change_password')
-            bar = SPAN(prefix,self.user.first_name,' [ ', logout, ']',_class='auth_navbar')
+            bar = SPAN(user_page,' [ ', logout, ' ]',_class='auth_navbar')
             if not 'profile' in self.settings.actions_disabled:
-                bar.insert(4, ' | ')
-                bar.insert(5, profile)
+                bar.insert(3, ' | ')
+                bar.insert(4, profile)
             if not 'change_password' in self.settings.actions_disabled:
                 bar.insert(-1, ' | ')
                 bar.insert(-1, password)
         else:
-            login=A(T('login'),_href=action+'/login')
+            login=A(T('login'),_href=action+'/login'+next)
             register=A(T('register'),_href=action+'/register')
             retrieve_username=A(T('forgot username?'),
                             _href=action+'/retrieve_username')
